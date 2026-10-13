@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TARGET X — Week 1 Mock Test</title>
+<style>
+:root{
+  --navy:#12314f; --navy2:#1f3a5f; --teal:#0e6b74; --teal-l:#e6f3f4;
+  --bg:#eef2f7; --card:#ffffff; --ink:#16283f; --muted:#5b6b7d; --line:#d7dee7;
+  --green:#1a7f4b; --green-l:#e6f5ec; --red:#c0392b; --red-l:#fdecea;
+  --amber:#b8860b; --amber-l:#fdf5e2; --purple:#5b3fa8; --purple-l:#efeafc;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:system-ui,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Nirmala UI','Noto Sans Bengali',sans-serif;
+  background:var(--bg); color:var(--ink); font-size:16px; line-height:1.5;
+}
+.bn{font-family:'Nirmala UI','Noto Sans Bengali','Vrinda',system-ui,sans-serif}
+.hide{display:none !important}
+.wrap{max-width:1000px;margin:0 auto;padding:0 14px}
+a{color:var(--teal)}
+
+/* ---------------- topbar ---------------- */
+.topbar{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,var(--teal) 130%);color:#fff;
+  position:sticky;top:0;z-index:40;box-shadow:0 2px 10px rgba(9,25,45,.25)}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:38px;height:38px;border-radius:10px;background:#fff;color:var(--navy);font-weight:800;
+  display:grid;place-items:center;font-size:15px;letter-spacing:.5px;flex:0 0 auto}
+.brand b{display:block;font-size:15px;line-height:1.15}
+.brand small{display:block;font-size:11.5px;opacity:.85}
+.acts{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.ghost{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.35);color:#fff;
+  padding:6px 11px;border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit}
+.ghost:hover{background:rgba(255,255,255,.25)}
+body.in-test .topbar .acts{visibility:hidden}
+
+/* ---------------- generic ---------------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 1px 3px rgba(18,49,79,.06);padding:16px;margin:14px 0}
+h1{font-size:22px;margin:0 0 4px}
+h2{font-size:19px;margin:0 0 4px}
+h3{font-size:16px;margin:0 0 6px}
+.sub{color:var(--muted);font-size:13.5px;margin:0 0 12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:0;cursor:pointer;
+  font-family:inherit;font-weight:700;font-size:15px;padding:11px 18px;border-radius:11px;
+  background:var(--teal);color:#fff;transition:.15s}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.sec{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.btn.warn{background:var(--red)}
+.btn.big{width:100%;padding:13px 18px;font-size:16px}
+.btn.sm{padding:7px 12px;font-size:13.5px;border-radius:9px}
+.linkbtn{background:none;border:0;color:var(--teal);font-family:inherit;font-size:13px;font-weight:700;
+  cursor:pointer;text-decoration:underline;padding:0}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.chip{display:inline-block;font-size:12px;font-weight:700;padding:3px 9px;border-radius:20px;border:1px solid transparent}
+.chip.open{background:var(--green-l);color:var(--green);border-color:#bfe3cd}
+.chip.lock{background:#eef1f5;color:var(--muted);border-color:#dde3ea}
+.chip.done{background:var(--teal-l);color:var(--teal);border-color:#bfe0e2}
+.chip.admin{background:var(--amber-l);color:var(--amber);border-color:#eddcae}
+
+/* filter pills */
+.fbtn{border:1.5px solid var(--line);background:#fff;border-radius:20px;padding:7px 14px;
+  font-family:inherit;font-weight:700;font-size:13.5px;cursor:pointer;color:var(--ink);transition:.12s}
+.fbtn:hover{border-color:var(--teal)}
+.fbtn.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.fbtn.c{border-color:#bfe3cd} .fbtn.c.on{background:var(--green);border-color:var(--green)}
+.fbtn.w{border-color:#eab5ae} .fbtn.w.on{background:var(--red);border-color:var(--red)}
+.fbtn.u{border-color:#dde3ea} .fbtn.u.on{background:#5b6b7d;border-color:#5b6b7d}
+
+/* ---------------- forms ---------------- */
+label.f{display:block;font-size:13.5px;font-weight:700;margin:12px 0 4px}
+input[type=text],input[type=tel],input[type=url],select{
+  width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;
+  font-size:15px;background:#fff;color:var(--ink)}
+input:focus,select:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,107,116,.13)}
+.hint{font-size:12.5px;color:var(--muted);margin-top:4px}
+.err{font-size:13px;color:var(--red);margin-top:6px;font-weight:600}
+.fixedbox{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#f2f6fa;
+  border:1.5px dashed #b9c8d8;border-radius:10px;padding:11px 12px;font-weight:800;color:var(--navy)}
+.fixedbox span.tag{font-size:11.5px;font-weight:700;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:20px;padding:2px 9px}
+
+/* ---------------- day cards ---------------- */
+.days{display:grid;grid-template-columns:1fr;gap:12px}
+.day{display:flex;gap:13px;align-items:center;border:1px solid var(--line);background:#fff;
+  border-radius:14px;padding:13px;cursor:pointer;transition:.15s;text-align:left;font-family:inherit}
+.day:hover{border-color:var(--teal);box-shadow:0 3px 12px rgba(14,107,116,.12)}
+.day.locked{background:#f7f9fb;cursor:not-allowed}
+.day.locked:hover{border-color:var(--line);box-shadow:none}
+.day .badge{width:56px;height:56px;border-radius:13px;background:var(--teal-l);color:var(--teal);
+  display:grid;place-items:center;font-weight:800;font-size:15px;flex:0 0 auto;text-align:center;line-height:1.1}
+.day.locked .badge{background:#eef1f5;color:#93a1b0}
+.day .mid{flex:1 1 auto;min-width:0}
+.day .mid b{font-size:16.5px}
+.day .mid .meta{font-size:12.5px;color:var(--muted);margin-top:2px}
+.day .mid .sched{font-size:12px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis}
+.count{font-size:12.5px;color:var(--amber);font-weight:700;margin-top:3px}
+
+/* ---------------- topic / test cards ---------------- */
+.topics{display:grid;grid-template-columns:1fr;gap:12px}
+.topic{border:1px solid var(--line);border-radius:13px;padding:14px;background:#fff}
+.topic.done{border-color:#bfe0e2;background:linear-gradient(180deg,#fbfeff,#fff)}
+.topic h3{margin:0 0 2px}
+.topic .meta{font-size:12.5px;color:var(--muted)}
+.best{font-size:13px;font-weight:700;color:var(--green)}
+.marks-line{font-size:12.5px;color:var(--muted);margin-top:6px}
+.marks-line b{color:var(--ink)}
+
+/* ---------------- test screen ---------------- */
+.test-grid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:14px;align-items:start}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 13px;margin-bottom:12px}
+.timer{font-weight:800;font-size:19px;font-variant-numeric:tabular-nums;color:var(--navy)}
+.timer.low{color:var(--red)}
+.qbox{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px}
+.qno{font-size:13px;font-weight:800;color:var(--teal);letter-spacing:.4px}
+.qtext{font-size:17px;font-weight:700;margin:6px 0 14px}
+.opt{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:left;font-family:inherit;
+  background:#fff;border:1.5px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:9px;
+  cursor:pointer;font-size:15.5px;transition:.12s}
+.opt:hover{border-color:var(--teal);background:#fbffff}
+.opt .k{font-weight:800;color:var(--teal);flex:0 0 auto}
+.opt.sel{border-color:var(--teal);background:var(--teal-l)}
+.opt.right{border-color:var(--green);background:var(--green-l)}
+.opt.wrong{border-color:var(--red);background:var(--red-l)}
+.opt .tag{margin-left:auto;font-size:12px;font-weight:800}
+.navrow{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.palette{background:#fff;border:1px solid var(--line);border-radius:13px;padding:12px}
+.palette h4{margin:0 0 8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(38px,1fr));gap:6px}
+.pbtn{aspect-ratio:1;border-radius:9px;border:1.5px solid var(--line);background:#fff;font-family:inherit;
+  font-weight:700;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.pbtn.ans{background:var(--green);border-color:var(--green);color:#fff}
+.pbtn.mark{background:var(--purple);border-color:var(--purple);color:#fff}
+.pbtn.cur{outline:3px solid rgba(14,107,116,.35);outline-offset:1px}
+.pbtn.notans{background:var(--red-l);border-color:#eab5ae}
+.legend{font-size:11.5px;color:var(--muted);margin-top:9px;display:flex;gap:10px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:middle}
+
+/* ---------------- result ---------------- */
+.scorecard{background:linear-gradient(135deg,var(--navy),var(--teal));color:#fff;border-radius:16px;padding:20px;text-align:center}
+.scorecard .big{font-size:44px;font-weight:800;line-height:1}
+.scorecard .sub2{opacity:.9;font-size:14px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:14px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.stat .v{font-size:22px;font-weight:800}
+.stat .l{font-size:12.5px;color:var(--muted)}
+.v.g{color:var(--green)} .v.r{color:var(--red)} .v.n{color:var(--muted)} .v.t{color:var(--teal)}
+.breakline{font-size:13.5px;margin-top:10px;line-height:1.9}
+.breakline b.t{display:inline-block;min-width:118px}
+.rev{border:1px solid var(--line);border-radius:12px;padding:13px;margin:10px 0;background:#fff}
+.rev.rc{border-left:5px solid var(--green)}
+.rev.rw{border-left:5px solid var(--red)}
+.rev.ru{border-left:5px solid #93a1b0}
+.rev .head{display:flex;gap:8px;justify-content:space-between;font-size:12.5px;font-weight:800;color:var(--muted)}
+.exp{background:var(--teal-l);border-left:4px solid var(--teal);border-radius:8px;padding:9px 11px;
+  font-size:14px;margin-top:9px}
+.exp b{color:var(--teal)}
+
+/* ---------------- table ---------------- */
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:560px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{background:#f2f6fa;font-size:12.5px;color:var(--navy);position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:center;font-variant-numeric:tabular-nums}
+.rank1{background:#fffbe8}.rank2{background:#f6f8fa}.rank3{background:#fdf6ee}
+.medal{font-weight:800}
+
+/* ---------------- modal / toast ---------------- */
+.modal{position:fixed;inset:0;background:rgba(11,26,43,.55);display:grid;place-items:center;z-index:80;padding:14px}
+.modal .box{background:#fff;border-radius:16px;max-width:560px;width:100%;padding:18px;max-height:92vh;overflow:auto}
+.modal h3{margin:0 0 8px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#0f2537;color:#fff;
+  padding:11px 17px;border-radius:11px;font-size:14px;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.3);max-width:92vw}
+.banner{background:var(--amber-l);border:1px solid #eddcae;color:#7a5c00;border-radius:11px;
+  padding:9px 12px;font-size:13.5px;margin:12px 0;font-weight:600}
+.note{font-size:13px;color:var(--muted)}
+code{background:#f0f3f7;padding:1px 5px;border-radius:5px;font-size:12.5px}
+hr.sep{border:0;border-top:1px solid var(--line);margin:16px 0}
+
+/* ---------------- responsive ---------------- */
+@media (max-width:820px){
+  .test-grid{grid-template-columns:1fr}
+  .pgrid{grid-template-columns:repeat(auto-fill,minmax(34px,1fr))}
+  .qtext{font-size:16px}
+  .brand small{display:none}
+  .breakline b.t{min-width:100%}
+}
+@media (max-width:430px){
+  .acts .lbl{display:none}
+  .ghost{padding:7px 10px}
+  .scorecard .big{font-size:36px}
+}
+@media print{.topbar,.btn,.navrow{display:none !important}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap bar">
+    <div class="brand">
+      <span class="logo">TX</span>
+      <span><b>TARGET X</b><small>Week 1 — Mock Test (Bengali)</small></span>
+    </div>
+    <div class="acts">
+      <button class="ghost" id="btnMy">📋 <span class="lbl">My Results</span></button>
+      <button class="ghost" id="btnLB">🏆 <span class="lbl">Leaderboard</span></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ============ 1. REGISTRATION ============ -->
+  <section id="screen-reg" class="screen">
+    <div class="card" style="max-width:560px;margin:22px auto">
+      <h1>Welcome! 🙏</h1>
+      <p class="sub">Fill in your details before starting. This is how your name will appear on the scoreboard.</p>
+      <label class="f" for="regName">Name *</label>
+      <input type="text" id="regName" placeholder="Enter your full name" autocomplete="name">
+      <label class="f" for="regMobile">Mobile Number *</label>
+      <input type="tel" id="regMobile" placeholder="10-digit mobile number" inputmode="numeric" maxlength="14" autocomplete="tel">
+      <div class="hint">This number links your day-wise results on the leaderboard.</div>
+      <label class="f">Batch</label>
+      <div class="fixedbox"><span>TARGET X</span><span class="tag">fixed</span></div>
+      <div id="regErr" class="err hide"></div>
+      <button class="btn big" id="btnReg" style="margin-top:16px">Start Test ➜</button>
+      <p class="note" style="margin-top:10px">Marking: <b>+2</b> for each correct answer, <b>−0.5</b> for each wrong answer, <b>0</b> for unattempted.</p>
+    </div>
+  </section>
+
+  <!-- ============ 2. HOME / DAY LIST ============ -->
+  <section id="screen-home" class="screen hide">
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div>
+          <h2 style="margin:0">Hello, <span id="homeName">—</span> 👋</h2>
+          <p class="sub" style="margin:4px 0 0">Week 1 — Foundation | Each day's test unlocks at <b>9:00 PM</b> on that day
+            · <button class="linkbtn" id="btnEdit">edit name / number</button></p>
+        </div>
+        <span class="chip open" id="homeStatus">—</span>
+      </div>
+      <hr class="sep">
+      <div class="row" style="gap:16px">
+        <div><div class="note">Total questions</div><b id="stQ">—</b></div>
+        <div><div class="note">Total marks</div><b id="stM">—</b></div>
+        <div><div class="note">Your total score</div><b id="stS">—</b></div>
+        <div><div class="note">Tests attempted</div><b id="stA">—</b></div>
+      </div>
+      <div class="banner" id="ruleBanner">📌 Marking: each correct answer <b>+2</b> | each wrong answer <b>−0.5</b> | unattempted <b>0</b>. The test auto-submits when time runs out.</div>
+    </div>
+    <div class="days" id="dayList"></div>
+    <p class="note" style="text-align:center;margin:18px 0 30px">Note: West Bengal had 23 districts after 2017; the 2026–27 state budget proposed five new districts/Kolkata reorganisation. Relevant questions mention this in detail.</p>
+  </section>
+
+  <!-- ============ DAY DETAIL ============ -->
+  <section id="screen-day" class="screen hide">
+    <button class="btn sec sm" id="btnBackHome">⬅ Home</button>
+    <div class="card">
+      <h2 id="dayTitle" style="margin:0">—</h2>
+      <p class="sub" id="daySub" style="margin:4px 0 0"></p>
+      <div class="row" style="margin-top:10px"><span class="chip done" id="dayChip">—</span><span class="note" id="dayBest"></span></div>
+    </div>
+    <div class="topics" id="topicList"></div>
+    <div style="height:26px"></div>
+  </section>
+
+  <!-- ============ INSTRUCTIONS ============ -->
+  <section id="screen-ins" class="screen hide">
+    <button class="btn sec sm" id="btnBackDay">⬅ Back</button>
+    <div class="card" style="max-width:620px;margin:14px auto">
+      <h2 id="insTitle" style="margin:0">—</h2>
+      <p class="sub" id="insSub"></p>
+      <div class="stats" style="margin-bottom:8px">
+        <div class="stat"><div class="v t" id="insQ">—</div><div class="l">Questions</div></div>
+        <div class="stat"><div class="v t" id="insT">—</div><div class="l">Time</div></div>
+        <div class="stat"><div class="v t" id="insM">—</div><div class="l">Max marks</div></div>
+      </div>
+      <div class="banner">Marking: correct <b>+2</b> • wrong <b>−0.5</b> • unattempted <b>0</b>. The test auto-submits when the timer ends.</div>
+      <ul style="font-size:14.5px;margin:10px 0 0 18px;padding:0">
+        <li>Use the palette on the right to jump to any question.</li>
+        <li>Green = answered, Red = not answered, Purple = marked for review.</li>
+        <li>Press “Submit Test” when done — you cannot change answers after that.</li>
+        <li>After submitting you will see your <b>correct</b>, <b>incorrect</b> and <b>unattempted</b> questions with the answer key and explanations.</li>
+        <li>Questions are in Bengali; buttons and menus are in English.</li>
+      </ul>
+      <button class="btn big" id="btnStart" style="margin-top:16px">Start Test ▶</button>
+    </div>
+  </section>
+
+  <!-- ============ TEST ============ -->
+  <section id="screen-test" class="screen hide">
+    <div class="qhead">
+      <div>
+        <div style="font-weight:800" id="tTitle">—</div>
+        <div class="note" id="tSub"></div>
+      </div>
+      <div style="text-align:right">
+        <div class="timer" id="tTimer">00:00</div>
+        <div class="note">Time left</div>
+      </div>
+    </div>
+    <div class="test-grid">
+      <div>
+        <div class="qbox">
+          <div class="qno" id="qNo">Question 1</div>
+          <div class="qtext bn" id="qText">—</div>
+          <div id="qOpts"></div>
+        </div>
+        <div class="navrow">
+          <button class="btn sec sm" id="bPrev">⬅ Previous</button>
+          <button class="btn sec sm" id="bClear">Clear Response</button>
+          <button class="btn sec sm" id="bMark">🔖 Mark for Review</button>
+          <button class="btn sm" id="bNext">Save &amp; Next ➜</button>
+          <button class="btn warn sm" id="bSubmit" style="margin-left:auto">Submit Test</button>
+        </div>
+      </div>
+      <aside class="palette">
+        <h4>Question Palette</h4>
+        <div class="pgrid" id="pGrid"></div>
+        <div class="legend">
+          <span><i style="background:#1a7f4b"></i>Answered</span>
+          <span><i style="background:#fdecea;border:1px solid #eab5ae"></i>Not answered</span>
+          <span><i style="background:#5b3fa8"></i>Marked</span>
+        </div>
+      </aside>
+    </div>
+    <div style="height:30px"></div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section id="screen-res" class="screen hide">
+    <div class="scorecard">
+      <div style="font-size:15px;opacity:.92" id="resWho">—</div>
+      <div class="big" id="resScore">0</div>
+      <div class="sub2" id="resMax">Max marks 0</div>
+      <div style="margin-top:8px;font-weight:800" id="resRemark">—</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="v g" id="resC">0</div><div class="l">Correct × (+2)</div></div>
+      <div class="stat"><div class="v r" id="resW">0</div><div class="l">Wrong × (−0.5)</div></div>
+      <div class="stat"><div class="v n" id="resU">0</div><div class="l">Unattempted × (0)</div></div>
+      <div class="stat"><div class="v t" id="resAcc">—</div><div class="l">Accuracy</div></div>
+      <div class="stat"><div class="v t" id="resTime">—</div><div class="l">Time taken</div></div>
+    </div>
+    <div class="card">
+      <h3 style="margin:0 0 4px">Review your answers</h3>
+      <p class="sub">Question-number summary and the full answer key, filtered by result.</p>
+      <div class="breakline" id="resBreakdown"></div>
+      <div class="row" id="resFilters" style="margin-top:12px"></div>
+    </div>
+    <div class="card">
+      <div class="note" id="syncNote">—</div>
+      <div class="row" style="margin-top:12px">
+        <button class="btn" id="bReview">📖 Full Answer Key &amp; Explanations</button>
+        <button class="btn sec" id="bAgain">🔁 Retake</button>
+        <button class="btn sec" id="bLb2">🏆 Leaderboard</button>
+        <button class="btn sec" id="bHome2">🏠 Home</button>
+      </div>
+    </div>
+    <div style="height:24px"></div>
+  </section>
+
+  <!-- ============ REVIEW ============ -->
+  <section id="screen-rev" class="screen hide">
+    <button class="btn sec sm" id="bBackRes">⬅ Result</button>
+    <div class="card">
+      <h2 id="revTitle" style="margin:0">Answer Key</h2>
+      <p class="sub" id="revSub"></p>
+      <div class="row" id="revFilters" style="margin-top:8px"></div>
+    </div>
+    <div id="revList"></div>
+    <div id="revEmpty" class="card hide" style="text-align:center;color:#5b6b7d">Nothing in this category 🎉</div>
+    <div style="height:24px"></div>
+  </section>
+
+  <!-- ============ LEADERBOARD ============ -->
+  <section id="screen-lb" class="screen hide">
+    <button class="btn sec sm" id="bBackHome2">⬅ Home</button>
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <div><h2 style="margin:0">🏆 Leaderboard</h2><p class="sub" id="lbStatus" style="margin:4px 0 0">—</p></div>
+        <div class="row">
+          <select id="lbDay" style="width:auto;padding:8px 10px"></select>
+          <button class="btn sm" id="bLbRefresh">🔄 Refresh</button>
+        </div>
+      </div>
+    </div>
+    <div class="tblwrap"><table id="lbTable"></table></div>
+    <div class="card" style="margin-top:14px">
+      <h3>Day-wise entries</h3>
+      <p class="sub">Every attempt in detail — who, which day, which topic, what score.</p>
+      <div class="tblwrap"><table id="enTable"></table></div>
+    </div>
+    <div style="height:24px"></div>
+  </section>
+
+  <!-- ============ MY RESULTS ============ -->
+  <section id="screen-my" class="screen hide">
+    <button class="btn sec sm" id="bBackHome3">⬅ Home</button>
+    <div class="card">
+      <h2 style="margin:0">📋 My Results (this device)</h2>
+      <p class="sub">Every attempt below is also sent to the Google Sheet when it is connected.</p>
+      <div class="row">
+        <button class="btn sm" id="bCsv">⬇️ Download CSV</button>
+        <button class="btn sec sm" id="bReset">🗑 Clear device data</button>
+      </div>
+    </div>
+    <div class="tblwrap"><table id="myTable"></table></div>
+    <div style="height:24px"></div>
+  </section>
+
+</main>
+
+<!-- ============ SUBMIT MODAL ============ -->
+<div class="modal hide" id="mSubmit">
+  <div class="box">
+    <h3>Submit this test?</h3>
+    <p class="sub" id="mSubStats">—</p>
+    <div class="banner" id="mSubWarn">You cannot change your answers after submitting.</div>
+    <div class="row" style="justify-content:flex-end">
+      <button class="btn sec" id="mCancel">Cancel</button>
+      <button class="btn warn" id="mOk">Yes, Submit</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast hide" id="toast"></div>
+
+<script>
+/* ================================================================
+   CONFIG — edit these values by hand (there is no settings screen)
+   ================================================================ */
+const CONFIG = {
+  /* 1) Google Sheet — DIRECT READ by Sheet ID (reads rows & columns straight from
+        the sheet, no Apps Script needed for reading).
+        Paste just the ID from the sheet URL:
+            docs.google.com/spreadsheets/d/<THIS_PART>/edit
+        The sheet must be shared as  "Anyone with the link → Viewer". */
+  SHEET_ID: "17JDhjmkpTgyMJw9AG1JKHZGwJ0Fk4ya20xrb0PZOA_8",
+  SHEET_TAB: "Results",      /* which tab (sheet page) holds the results rows */
+
+  /* 2) Google Sheet — SUBMISSIONS (write).
+        Paste your Apps Script Web-App (/exec) URL so student results get recorded.
+        Note: a SHEET_ID alone can only READ — it cannot write. */
+  SHEET_URL: "https://script.google.com/macros/s/AKfycbx041pMZgPxDRHMSjox0xwz-YoG1x--eLuvhu2ETL_2s4Gl5JqDgEtBHtrs5N-59BeKXQ/exec",
+
+  /* 3) Anchor Monday of the test week, e.g. "2026-10-12".
+        Leave "" to use the current week automatically. */
+  WEEK_START: "",
+
+  /* 4) Set true to unlock every day's test immediately (for practice / demo). */
+  UNLOCK_ALL: false
+};
+
+/* ================= QUESTION DATA (questions are in Bengali) ================= */
+const WEEK_DATA = [{"key":"mon","idx":0,"name":"Monday","slot":"History: Indus Valley Civilization, Vedic Age | English: Noun, Pronoun","subs":[{"id":"indus","title":"History — Indus Valley Civilization","note":"Focus: site discoverers, rivers, key artefacts and dates.","qs":[{"q":"সিন্ধু সভ্যতার প্রথম আবিষ্কৃত সাইট (site) কোনটি?","o":["মহেঞ্জোদারো","হরপ্পা","লোথাল","কালিবঙ্গান"],"a":1,"e":"১৯২১ সালে পাঞ্জাবের রাভি নদীর তীরে দয়ারাম সাহনি হরপ্পা আবিষ্কার করেন — এটিই প্রথম আবিষ্কৃত সাইট।"},{"q":"মহেঞ্জোদারো আবিষ্কার করেন কে?","o":["দয়ারাম সাহনি","স্যার জন মার্শাল","রাখালদাস বন্দ্যোপাধ্যায়","এস. আর. রাও"],"a":2,"e":"১৯২২ সালে সিন্ধু নদীর তীরে রাখালদাস বন্দ্যোপাধ্যায় মহেঞ্জোদারো আবিষ্কার করেন।"},{"q":"'মহেঞ্জোদারো' শব্দের অর্থ কী?","o":["মৃতের স্তূপ","উচ্চ নগরী","নদীর উপত্যকা","জীবিতের নগরী"],"a":0,"e":"সিন্ধি ভাষায় মহেঞ্জোদারো = 'Mound of the Dead' অর্থাৎ মৃতের স্তূপ।"},{"q":"ভারতের বৃহত্তম হরপ্পা সাইট কোনটি?","o":["লোথাল","ধোলাভিরা","কালিবঙ্গান","রাখিগড়ি"],"a":3,"e":"হরিয়ানার হিসার জেলায় অবস্থিত রাখিগড়ি (Rakhigarhi) ভারতের বৃহত্তম হরপ্পা সাইট।"},{"q":"পুঁতি তৈরির জন্য বিখ্যাত হরপ্পা সাইট কোনটি?","o":["চানহুদারো","সুরকোটদা","বনওয়ালি","আমরি"],"a":0,"e":"চানহুদারোকে 'ভারতের ল্যাঙ্কাশায়ার' বলা হয়; এখানে পুঁতি (bead) তৈরির কারখানা পাওয়া গেছে।"},{"q":"লোথালের সবচেয়ে গুরুত্বপূর্ণ আবিষ্কার কোনটি?","o":["বৃহৎ স্নানাগার","শস্যভাণ্ডার","ডকইয়ার্ড","অগ্নিবেদি"],"a":2,"e":"গুজরাটের লোথালে বিশ্বের প্রাচীনতম কৃত্রিম ডকইয়ার্ড (জাহাজঘাটা) পাওয়া গেছে — সাইটটি ১৯৫৭ সালে এস. আর. রাও আবিষ্কার করেন।"},{"q":"বিখ্যাত 'বৃহৎ স্নানাগার' (Great Bath) কোন সাইটে পাওয়া গেছে?","o":["হরপ্পা","মহেঞ্জোদারো","ধোলাভিরা","কালিবঙ্গান"],"a":1,"e":"মহেঞ্জোদারোর দুর্গ (citadel) অংশে স্নানাগারটি (১১.৮৮ × ৭.০১ মিটার) বিশুদ্ধ পোড়া ইট ও বিটুমেনের আস্তরণ দিয়ে তৈরি।"},{"q":"সিন্ধু সভ্যতার মানুষ কোন ধাতু ব্যবহার করত না?","o":["তামা","ব্রোঞ্জ","লোহা","সোনা"],"a":2,"e":"সিন্ধু সভ্যতা তাম্র-ব্রোঞ্জ যুগের (Bronze Age); লোহা ব্যবহারের কোনো প্রমাণ নেই।"},{"q":"হরপ্পা সভ্যতার লিপি (script) সম্পর্কে সঠিক তথ্য কোনটি?","o":["ব্রাহ্মী লিপি, পঠিত","চিত্রলিপি এবং এখনও অপঠিত","খরোষ্ঠী লিপি, পঠিত","দেবনাগরী লিপি"],"a":1,"e":"হরপ্পা লিপি চিত্রমূলক (pictographic); প্রায় ৪০০০+-এর বেশি লিপিচিহ্ন পাওয়া গেলেও এখনও তা অপঠিত।"},{"q":"হরপ্পার সিলমোহর (seals) সাধারণত কী দিয়ে তৈরি হত?","o":["স্টেটাইট","তামা","লোহা","কাঠ"],"a":0,"e":"বেশিরভাগ সিল বর্গাকার স্টেটাইট পাথরে তৈরি; সিলে লিপি ও পশুচিত্র খোদিত থাকত।"},{"q":"হরপ্পা সিলে সবচেয়ে বেশি দেখা যায় এবং কোন কাল্পনিক প্রাণীটি হরপ্পা সিলে দেখা যায়?","o":["ঘোড়া","একশিংগা ষাঁড় (Unicorn)","হাতি","সিংহ"],"a":1,"e":"হরপ্পা সিলে কুঁজওয়ালা ষাঁড় ও একশিংগা ষাঁড় (unicorn) সবচেয়ে বেশি দেখা যায়; unicorn বাস্তবে অস্তিত্বহীন।"},{"q":"হরপ্পা কোন নদীর তীরে অবস্থিত?","o":["সিন্ধু","রাভি","ঘগ্গর","ঝেলাম"],"a":1,"e":"হরপ্পা পাঞ্জাবের রাভি (পুরাতন নাম পুরুষ্ণী) নদীর বাঁ তীরে, বর্তমান সাহিওয়ালে (পাকিস্তান) অবস্থিত।"},{"q":"কালিবঙ্গান কোন নদীর তীরে অবস্থিত?","o":["সিন্ধু","রাভি","সবরমতী","ঘগ্গর (পুরাতন সরস্বতী)"],"a":3,"e":"রাজস্থানের কালিবঙ্গান ঘগ্গর-হাকরা নদীর তীরে; এটিই প্রাচীন সরস্বতীর পথ বলে মনে করা হয়।"},{"q":"প্রাচীন জমিতে লাঙল চালানোর (ploughed field) প্রাচীনতম প্রমাণ কোথায় পাওয়া যায়?","o":["মহেঞ্জোদারো","হরপ্পা","কালিবঙ্গান","লোথাল"],"a":2,"e":"কালিবঙ্গানে ৬ মিটার প্রস্থের লাঙলের রেখাযুক্ত ক্ষেত পাওয়া গেছে — এটি প্রাচীনতম চাষের প্রমাণ।"},{"q":"সিন্ধু সভ্যতায় অগ্নিবেদি (fire altar) কোন দুটি সাইটে পাওয়া গেছে?","o":["হরপ্পা ও মহেঞ্জোদারো","কালিবঙ্গান ও লোথাল","ধোলাভিরা ও রাখিগড়ি","সুরকোটদা ও রঙ্গপুর"],"a":1,"e":"কালিবঙ্গান ও লোথালে অগ্নিবেদি পাওয়া গেছে, যা যজ্ঞ-কেন্দ্রিক ধর্মীয় আচরণের সংকেত দেয়।"},{"q":"সিন্ধু সভ্যতার কোন সাইটে ঘোড়ার অস্থি পাওয়া গেছে?","o":["লোথাল","সুরকোটদা","বনওয়ালি","রাখিগড়ি"],"a":1,"e":"গুজরাটের সুরকোটদায় ঘোড়ার অস্থি পাওয়া গেছে; তাই ঘোড়ার অস্তিত্ব নিয়ে সবচেয়ে বেশি আলোচনা হয়।"},{"q":"মাতৃদেবীর মূর্তি ও পশুপতি সিল কোন সাইটে পাওয়া গেছে?","o":["হরপ্পা","মহেঞ্জোদারো","কালিবঙ্গান","ধোলাভিরা"],"a":1,"e":"মহেঞ্জোদারোতে ত্রিমুখী যোগাসনে বসা পশুপতি সিল (proto-Shiva) ও পোড়ামাটির মাতৃদেবী পাওয়া গেছে।"},{"q":"হরপ্পা সভ্যতার বৃহত্তম ভবন কোনটি?","o":["মহেঞ্জোদারোর স্নানাগার","মহেঞ্জোদারোর শস্যভাণ্ডার","লোথালের ডক","হরপ্পার সভাকক্ষ"],"a":1,"e":"মহেঞ্জোদারোর বিখ্যাত শস্যভাণ্ডার (বৃহৎ শস্যগার) সাইটের বৃহত্তম ভবন (৪৫.৭১ × ১৫.২৩ মিটার)।"},{"q":"সিন্ধু সভ্যতার নগরী সাধারণত ক-টি অংশে বিভক্ত ছিল?","o":["এক","দুই","তিন","চার"],"a":1,"e":"নগরী দুটি অংশে বিভক্ত ছিল — পশ্চিম দিকে উঁচু দুর্গ (Citadel) ও পূর্ব দিকে নিম্ন নগর (Lower Town)।"},{"q":"সিন্ধু সভ্যতার পরিণত (Mature) পর্যায়ের সময়কাল কোনটি?","o":["৩৫০০–২৫০০ খ্রিস্টপূর্ব","২৬০০–১৯০০ খ্রিস্টপূর্ব","১৫০০–১০০০ খ্রিস্টপূর্ব","৫০০–৩০০ খ্রিস্টপূর্ব"],"a":1,"e":"সাধারণভাবে হরপ্পার পরিণত পর্যায় ২৬০০–১৯০০ খ্রিস্টপূর্ব (সম্পূর্ণ সভ্যতা ৩৩০০–১৩০০ খ্রিস্টপূর্ব)।"},{"q":"মেসোপটেমিয়ার লিখিত নথিতে সিন্ধু অঞ্চলকে কোন নামে অভিহিত করা হত?","o":["দিলমুন","মাগান","মেলুহা","এলাম"],"a":2,"e":"মেসোপটেমিয়ার (সুমেরীয়) নথিতে সিন্ধু অঞ্চল = 'মেলুহা' (Meluhha), যা হরপ্পার সঙ্গে বাণিজ্যের প্রমাণ।"},{"q":"জলাধার নির্মাণ ও জল-ব্যবস্থাপনার অসাধারণ নিদর্শন কোন সাইটে পাওয়া যায়?","o":["ধোলাভিরা","হরপ্পা","রঙ্গপুর","আমরি"],"a":0,"e":"গুজরাটের কচ্ছে অবস্থিত ধোলাভিরায় বিশাল জলাধার, ১৬টিরও বেশি জলাশয় ও সাইনবোর্ড পাওয়া গেছে।"},{"q":"ভারতের উত্তরতম হরপ্পা সাইট কোনটি?","o":["মান্দা (জম্মু)","রাখিগড়ি","ভিরানা","রোপড়"],"a":0,"e":"জম্মুর মান্দা চেনাব নদীর তীরে ভারতের উত্তরতম হরপ্পা সাইট; দাইমাবাদ (মহারাষ্ট্র) দক্ষিণতম।"},{"q":"হরপ্পা সভ্যতার একটি বন্দর-নগরী হিসেবে পরিচিত সাইট কোনটি?","o":["বনওয়ালি","লোথাল","কালিবঙ্গান","কোটদিজি"],"a":1,"e":"লোথাল (গুজরাট) সমুদ্র-বাণিজ্যের বন্দর ছিল; সুত্কাগেন্দোর (বেলুচিস্তান)ও বন্দর-সাইট।"},{"q":"সিন্ধু সভ্যতায় মন্দির (temple) প্রসঙ্গে কোন বিবৃতি সঠিক?","o":["বড় মন্দির পাওয়া গেছে মহেঞ্জোদারোতে","কোনো মন্দিরই পাওয়া যায়নি","মন্দির ছিল দুর্গের কেন্দ্রে","লোথালে ৫টি মন্দির পাওয়া গেছে"],"a":1,"e":"হরপ্পা সভ্যতার কোনো মন্দির পাওয়া যায়নি — ধর্মীয় অনুমান মূলত মূর্তি, সিল ও অগ্নিবেদির ভিত্তিতে।"},{"q":"হরপ্পা সভ্যতার পতনের 'আর্য আক্রমণ' তত্ত্ব কে প্রধানত প্রস্তাব করেন?","o":["জন মার্শাল","মর্টিমার হুইলার","দয়ারাম সাহনি","এস. আর. রাও"],"a":1,"e":"মর্টিমার হুইলার (১৯৪৭) মহেঞ্জোদারোতে তলার দিকে পাওয়া কঙ্কাল দেখে আর্য আক্রমণকে পতনের কারণ বলেন; এখন এ তত্ত্ব বেশি সমর্থিত নয়।"},{"q":"মহেঞ্জোদারোতে পাওয়া ব্রোঞ্জের 'নৃত্যরত কন্যা' কোন কৌশলে তৈরি?","o":["লস্ট-ওয়াক্স (cire perdue)","ছাঁচে ঢালাই","হাতুড়ি দিয়ে পেটানো","পাথরে খোদাই"],"a":0,"e":"'নাচের মেয়ে' মূর্তিটি লস্ট-ওয়াক্স পদ্ধতিতে তৈরি ব্রোঞ্জের — হরপ্পার ধাতু-দক্ষতার সেরা নিদর্শন।"},{"q":"বিশ্বে সর্বপ্রথম তুলা চাষের প্রমাণ কোন সভ্যতায় পাওয়া যায়?","o":["মেসোপটেমিয়া","মিশর","সিন্ধু সভ্যতা","চীন"],"a":2,"e":"সিন্ধু সভ্যতায় বিশ্বের প্রাচীনতম তুলা চাষ ও বস্ত্রের (cotton) প্রমাণ পাওয়া যায়।"},{"q":"হরপ্পা সভ্যতায় ব্যবহৃত ওজনের (weights) অনুপাত প্রধানত কোন সংখ্যার গুণিতক ছিল?","o":["১০","১২","১৬","৬০"],"a":2,"e":"হরপ্পার চের্ট-নির্মিত ঘনকাকৃতি ওজন ১৬-এর গুণিতকে তৈরি হত (১, ২, ৪, ৮, ১৬, ৩২ ...)।"},{"q":"ভিরানা (Bhirrana) হরপ্পা সাইটটি কোন রাজ্যে অবস্থিত?","o":["পাঞ্জাব","হরিয়ানা","রাজস্থান","গুজরাট"],"a":1,"e":"হরিয়ানার ফতেহাবাদে অবস্থিত ভিরানা — হাকরা-মৃৎশিল্পের প্রাচীনতম পর্যায়ের সাইট।"}]},{"id":"vedic","title":"History — Vedic Age","note":"Focus: the four Vedas, priest roles, key hymns and Vedic terms.","qs":[{"q":"'আর্য' শব্দের অর্থ কী?","o":["যোদ্ধা","সম্ভ্রান্ত / শ্রেষ্ঠ","কৃষক","ভ্রমণকারী"],"a":1,"e":"'আর্য' (Arya) শব্দের অর্থ 'শ্রেষ্ঠ' বা 'সম্ভ্রান্ত' — কোনো জাতিগোষ্ঠীর নাম নয়।"},{"q":"প্রাচীনতম বেদ কোনটি?","o":["সামবেদ","যজুর্বেদ","ঋগ্বেদ","অথর্ববেদ"],"a":2,"e":"ঋগ্বেদ (আনুমানিক ১৫০০–১০০০ খ্রিস্টপূর্ব) প্রাচীনতম বেদ এবং বিশ্বের প্রাচীনতম সাহিত্যের অন্যতম।"},{"q":"ঋগ্বেদে মোট মণ্ডল (mandala) কতটি?","o":["৮টি","৯টি","১০টি","১২টি"],"a":2,"e":"ঋগ্বেদে ১০টি মণ্ডল, ১০২৮টি সূক্ত (স্তোত্র) রয়েছে।"},{"q":"ঋগ্বেদে মোট সূক্ত (স্তোত্র) কতটি?","o":["১০০০","১০২৮","১০৫৫","১২৮৮"],"a":1,"e":"ঋগ্বেদে ১০ মণ্ডলে মোট ১০২৮টি সূক্ত রয়েছে (বালখিল্য সূক্ত ধরে ১১টি অতিরিক্ত)।"},{"q":"দশরাজ যুদ্ধ (Battle of Ten Kings) ঋগ্বেদের কোন মণ্ডলে বর্ণিত?","o":["৪র্থ মণ্ডল","৬ষ্ঠ মণ্ডল","৭ম মণ্ডল","১০ম মণ্ডল"],"a":2,"e":"ঋগ্বেদের ৭ম মণ্ডলে (৭|১৮, ৭|৩৩, ৭|৮৩) দাশরাজ্ঞ যুদ্ধ বর্ণিত — রাজা সুদাস ও পূরুর বিরুদ্ধে ১০ রাজার যুদ্ধ।"},{"q":"ঋগ্বেদের সম্পূর্ণ নবম মণ্ডল কোন দেবতার স্তোত্রে পূর্ণ?","o":["অগ্নি","ইন্দ্র","সোম","বরুণ"],"a":2,"e":"নবম মণ্ডলের সব সূক্ত সোম দেবতার উদ্দেশে; ঋগ্বেদে ইন্দ্রের স্তোত্র সবচেয়ে বেশি (প্রায় ২৫০টি)।"},{"q":"গায়ত্রী মন্ত্র কোন বেদে রয়েছে?","o":["ঋগ্বেদ","সামবেদ","যজুর্বেদ","অথর্ববেদ"],"a":0,"e":"গায়ত্রী (সাবিত্রী) মন্ত্র ঋগ্বেদের ৩য় মণ্ডল, ৬২তম সূক্তের ১০ম ঋক্‌।"},{"q":"গায়ত্রী মন্ত্রের দ্রষ্টা/রচয়িতা ঋষি কে?","o":["বসিষ্ঠ","বিশ্বামিত্র","অগস্ত্য","গৌতম"],"a":1,"e":"বিশ্বামিত্র গায়ত্রী মন্ত্রের দ্রষ্টা; ছন্দ ২৪ অক্ষরের গায়ত্রী, দেবতা সবিতা।"},{"q":"বেদ শব্দের অর্থ কী?","o":["জ্ঞান","পবিত্র","গান","যজ্ঞ"],"a":0,"e":"'বেদ' শব্দটি সংস্কৃত 'বিদ' (vid) ধাতু থেকে এসেছে, অর্থ 'জ্ঞান' (knowledge); তাই বেদকে 'জ্ঞানের ভাণ্ডার' বলা হয়।"},{"q":"বেদকে 'অপৌরুষেয়' বলা হয় কারণ —","o":["মানুষ লিখতে পারেনি","এগুলি কোনো মানুষের রচনা নয়, ঋষিদের দ্বারা দৃষ্ট/শ্রুত","কেউ এর অর্থ জানে না","কেবল মৌখিকভাবে প্রচলিত"],"a":1,"e":"বেদ 'অপৌরুষেয়' অর্থাৎ ঈশ্বরপ্রদত্ত ও ঋষিদের 'শ্রুতি' হিসেবে প্রাপ্ত — তাই মানুষের রচনা নয়।"},{"q":"চার বর্ণের (ব্রাহ্মণ-ক্ষত্রিয়-বৈশ্য-শূদ্র) উল্লেখ প্রথম কোন সূক্তে পাওয়া যায়?","o":["হিরণ্যগর্ভ সূক্ত","পুরুষসূক্ত (ঋগ্বেদ ১০|৯০)","গায়ত্রী সূক্ত","সৃষ্টি সূক্ত"],"a":1,"e":"ঋগ্বেদের ১০ম মণ্ডলের পুরুষসূক্ত (১০|৯০)-এ চার বর্ণের সৃষ্টির বর্ণনা রয়েছে।"},{"q":"ব্রাহ্মণ গ্রন্থগুলির মূল বিষয় কী?","o":["চিকিৎসা","যজ্ঞের বিধি-বিধানের ব্যাখ্যা","গানের সুর","জ্যোতিষ গণনা"],"a":1,"e":"ব্রাহ্মণ গ্রন্থগুলি যজ্ঞ ও পুরোহিত-কর্মের বিধি ও তাৎপর্য ব্যাখ্যা করে (যেমন শতপথ ব্রাহ্মণ)।"},{"q":"আরণ্যক গ্রন্থগুলি কারা অধ্যয়ন করতেন?","o":["গৃহস্থ","বনবাসী (বানপ্রস্থ) ব্যক্তিরা","ছাত্র","সন্ন্যাসী"],"a":1,"e":"আরণ্যক গ্রন্থ বনভূমিতে বসবাসকারী বানপ্রস্থ-আশ্রমীরা অধ্যয়ন করতেন — ব্রাহ্মণ ও উপনিষদের সেতু।"},{"q":"উপনিষদের স্বাভাবিক সংখ্যা কত বলে প্রচলিত?","o":["৪৮","৯৬","১০৮","২০০"],"a":2,"e":"প্রচলিতভাবে ১০৮টি উপনিষদ স্বীকৃত; এগুলি 'বেদান্ত' নামে পরিচিত।"},{"q":"বেদাঙ্গ (Vedangas) কতটি?","o":["৪টি","৬টি","৮টি","১২টি"],"a":1,"e":"ছয়টি বেদাঙ্গ — শিক্ষা, কল্প, ব্যাকরণ, নিরুক্ত, ছন্দ ও জ্যোতিষ।"},{"q":"'নিরুক্ত' বেদাঙ্গটি কী নিয়ে আলোচনা করে?","o":["উচ্চারণ","শব্দের ব্যুৎপত্তি (etymology)","যজ্ঞের নিয়ম","ছন্দ"],"a":1,"e":"নিরুক্ত শব্দের ব্যুৎপত্তি ও অর্থ নির্ধারণ নিয়ে আলোচনা করে; শিক্ষা = উচ্চারণ, ছন্দ = ছন্দশাস্ত্র।"},{"q":"প্রাচীন ভারতের উপবেদ (Upaveda) কতটি?","o":["২টি","৩টি","৪টি","৫টি"],"a":2,"e":"চারটি উপবেদ — আয়ুর্বেদ, ধনুর্বেদ, স্থাপত্যবেদ ও গন্ধর্ববেদ।"},{"q":"আয়ুর্বেদ কোন বেদের উপবেদ?","o":["ঋগ্বেদ","সামবেদ","যজুর্বেদ","অথর্ববেদ"],"a":3,"e":"আয়ুর্বেদ মূলত অথর্ববেদের উপবেদ; সূক্ষ্মভাবে ধনুর্বেদ-যজুর্বেদ, গন্ধর্ববেদ-সামবেদ, স্থাপত্যবেদ-ঋগ্বেদ।"},{"q":"সামবেদের সঙ্গে যুক্ত পুরোহিতকে কী বলা হত?","o":["হোতা","উদগাতা","অধ্বর্যু","ব্রহ্মা"],"a":1,"e":"সামবেদ = উদগাতা (গায়ক পুরোহিত); ঋগ্বেদ = হোতা, যজুর্বেদ = অধ্বর্যু, অথর্ববেদ = ব্রহ্মা।"},{"q":"সামবেদকে কী বলা হয়?","o":["ভারতীয় সংগীতের জননী","জ্ঞানের বেদ","মন্ত্র-তন্ত্রের বেদ","যজ্ঞের বেদ"],"a":0,"e":"সামবেদ মূলত সুর ও ছন্দের বেদ; তাই একে 'ভারতীয় সংগীতের জননী' বলা হয়।"},{"q":"অথর্ববেদ প্রধানত কী নিয়ে আলোচনা করে?","o":["যজ্ঞ ও সুর","মন্ত্র-তন্ত্র, ওষুধ ও চিকিৎসা","রাজনীতি","নগর পরিকল্পনা"],"a":1,"e":"অথর্ববেদে মন্ত্র-তন্ত্র, রোগ-চিকিৎসা, জাদু-কবচ — অর্থাৎ দৈনন্দিন জীবনের বিষয় রয়েছে।"},{"q":"বৈদিক সাহিত্যে 'ঋত' (Rta) শব্দের অর্থ কী?","o":["যজ্ঞের অগ্নি","মহাজাগতিক নিয়ম/সত্য","রাজার আদেশ","নদীর স্রোত"],"a":1,"e":"'ঋত' = মহাজাগতিক নিয়ম বা চিরন্তন সত্য, যা বরুণ ও মিত্র রক্ষা করেন।"},{"q":"বৃত্র নামক অসুরকে বজ্র দিয়ে বধ করেন কে?","o":["বরুণ","অগ্নি","ইন্দ্র","সূর্য"],"a":2,"e":"ঋগ্বেদের সর্বাধিক বর্ণিত মিথ — ইন্দ্র বজ্র অস্ত্রে বৃত্রকে বধ করেন (বৃত্রহত্যা)।"},{"q":"'হিরণ্যগর্ভ' সূক্ত (ঋগ্বেদ ১০|১২১) কিসের বর্ণনা দেয়?","o":["রাজ্যজয়ের","সৃষ্টির উৎস ও সোনালি গর্ভ","বৃষ্টির","যুদ্ধের"],"a":1,"e":"হিরণ্যগর্ভ সূক্তে সৃষ্টির আদি উৎস হিসেবে 'সোনালি গর্ভ' ও প্রজাপতির ধারণা বর্ণিত।"},{"q":"ঋগ্বেদে উল্লিখিত 'পঞ্চজন' বা 'পঞ্চজন্য' শব্দটি কীসের সঙ্গে যুক্ত?","o":["পাঁচ নদী","পাঁচটি জনগোষ্ঠী","পাঁচটি ঋতু","পাঁচটি বর্ণ"],"a":1,"e":"'পঞ্চজন' বলতে পাঁচটি জনসম্প্রদায়কে বোঝায়, যা বৈদিক আর্য সমাজের অংশ ছিল।"},{"q":"বৈদিক যুগে সম্পদের প্রধান পরিমাপক কী ছিল?","o":["স্বর্ণের মুদ্রা","গো (গবাদি পশু)","ভূমির পরিমাণ","দাসের সংখ্যা"],"a":1,"e":"প্রারম্ভিক বৈদিক যুগে মুদ্রা ছিল না; গাভী ও গবাদি পশুই ছিল সম্পদের মাপকাঠি ('গোমতী' = ধনবান)।"},{"q":"'গোত্র' শব্দের অর্থ কী?","o":["গ্রাম","একই পূর্বপুরুষের বংশধরদের দল","রাজার সভা","যোদ্ধাদল"],"a":1,"e":"'গোত্র' = একই পূর্বপুরুষ বা ঋষির বংশধরদের সমষ্টি; গোত্র-ভিত্তিতে সমাজ সংগঠিত ছিল।"},{"q":"বৈদিক যুগে রাজাকে সহায়তা করত যে দুটি সভা, সেগুলি হল —","o":["সভা ও সমিতি","সভা ও পঞ্চায়েত","সমিতি ও গোত্র","ব্রাহ্মণ ও ক্ষত্রিয়"],"a":0,"e":"'সভা' (নিচু সভা/মন্ত্রীসভা) ও 'সমিতি' (বৃহত্তর জনসভা) রাজাকে শাসনে সহায়তা করত।"},{"q":"ঋগ্বেদে যে নদীর নাম 'নদী'দের মধ্যে শ্রেষ্ঠ/অতুলনীয় হিসেবে বেশি বার উল্লেখিত, সেটি হল —","o":["গঙ্গা","যমুনা","সিন্ধু","সরস্বতী"],"a":3,"e":"ঋগ্বেদে সরস্বতীর উল্লেখ সবচেয়ে বেশি এবং তাকে সর্বশ্রেষ্ঠ নদী বলা হয়েছে; সিন্ধু নদীর নামই 'Sindhu'।"},{"q":"যজুর্বেদের দুটি প্রধান শাখা কোনটি?","o":["শুক্লযজুর্বেদ ও কৃষ্ণযজুর্বেদ","পূর্ব ও উত্তর","ঋক্‌ ও সাম","মন্ত্র ও ব্রাহ্মণ"],"a":0,"e":"যজুর্বেদের দুটি শাখা — শুক্লযজুর্বেদ (বাজসনেয়ী) ও কৃষ্ণযজুর্বেদ (তৈত্তিরীয়)।"}]},{"id":"eng-np","title":"English — Noun & Pronoun","note":"Nouns (material, abstract, collective, uncountable), singular–plural, and pronoun types & case. (Monday's English block.)","qs":[{"q":"'The cattle ___ grazing in the field.' — শূন্যস্থানে সঠিক verb কোনটি?","o":["is","are","was","has"],"a":1,"e":"'Cattle' দেখতে একবচন কিন্তু সর্বদা plural — তাই 'are' বসবে।"},{"q":"নিচের কোনটি Material Noun (পদার্থবাচক বিশেষ্য)?","o":["Beauty","Gold","Team","Childhood"],"a":1,"e":"যে noun কোনো বস্তুর উপাদান বোঝায় তা Material Noun — যেমন gold, iron, water; Beauty ও Childhood abstract, Team collective।"},{"q":"নিচের কোনটি Abstract Noun (গুণবাচক বিশেষ্য)?","o":["Honesty","Book","River","Teacher"],"a":0,"e":"Abstract Noun = ধারণা/গুণ যা দেখা যায় না — honesty, bravery, childhood, kindness।"},{"q":"নিচের কোনটি Collective Noun (সমষ্টিবাচক বিশেষ্য)?","o":["Shepherd","Flock","Wool","Pasture"],"a":1,"e":"একজাতীয় ব্যক্তি/বস্তুর সমষ্টি বোঝায় Collective Noun — flock, team, jury, crowd, class।"},{"q":"নিচের কোনটি Uncountable Noun?","o":["Book","Information","Pen","Chair"],"a":1,"e":"Information, advice, furniture, luggage — uncountable; এদের সঙ্গে 'a/an' বা plural 's' বসে না।"},{"q":"'The news ___ very good today.' — সঠিক verb কোনটি?","o":["are","is","were","have"],"a":1,"e":"'News' দেখতে plural মনে হলেও এটি singular — তাই 'is' বসে (একইভাবে Mathematics, Physics)।"},{"q":"নিচের কোন শব্দের Plural ও Singular একই?","o":["Child","Sheep","Foot","Tooth"],"a":1,"e":"Sheep, deer, fish-এর singular ও plural একই রকম; Child → Children, Foot → Feet, Tooth → Teeth।"},{"q":"'Child' শব্দের সঠিক plural কোনটি?","o":["Childs","Childes","Children","Childrens"],"a":2,"e":"'Child' → 'Children' (irregular plural); 'childrens' ভুল।"},{"q":"'Ox' শব্দের plural কোনটি?","o":["Oxes","Oxen","Oxs","Ox"],"a":1,"e":"'Ox' → 'Oxen' (-en যোগে plural); 'Cow' → 'Cows' (নিয়মিত)।"},{"q":"'She herself solved the problem.' — 'herself' এখানে কোন pronoun?","o":["Reflexive/Emphatic","Personal","Relative","Indefinite"],"a":0,"e":"নিজের উপর জোর দিতে Reflexive/Emphatic pronoun ব্যবহার হয় — myself, himself, herself, themselves।"},{"q":"'Each other' ও 'one another' কোন ধরনের pronoun?","o":["Demonstrative","Reciprocal","Interrogative","Possessive"],"a":1,"e":"পারস্পরিক ক্রিয়া বোঝায় Reciprocal Pronoun — 'each other' (দুজনে), 'one another' (দুইয়ের বেশি)।"},{"q":"'Somebody, anyone, everyone, nobody' — এগুলি কোন ধরনের pronoun?","o":["Indefinite","Definite","Relative","Reflexive"],"a":0,"e":"কোন নির্দিষ্ট ব্যক্তি/বস্তুকে না বুঝিয়ে অনির্দিষ্টভাবে বোঝায় বলেই এরা Indefinite Pronoun।"},{"q":"'The man ___ I met yesterday was very kind.' — সঠিক pronoun কোনটি?","o":["who","whom","whose","which"],"a":1,"e":"Object হিসেবে 'man'-কে নির্দেশ করতে whom বসে; 'who' কর্তা হিসেবে বসত (The man who came...)।"},{"q":"'This is the boy ___ won the first prize.' — শূন্যস্থানে কী বসবে?","o":["whom","which","who","whose"],"a":2,"e":"কর্তা (subject) হিসেবে people-এর জন্য 'who' বসে।"},{"q":"'It is the book ___ cover is torn.' — সঠিক বিকল্প কোনটি?","o":["who","whom","whose","which"],"a":2,"e":"'book'-এর অধিকার বোঝাতে possessive relative pronoun 'whose' বসে।"},{"q":"'Each of the boys ___ done ___ homework.' — সঠিক জোড়া কোনটি?","o":["have / their","has / his","have / his","has / their"],"a":1,"e":"'Each'-এর পরে singular verb 'has' এবং singular pronoun 'his' বসে।"},{"q":"'You and ___ will go together.' — সঠিক pronoun কোনটি?","o":["me","I","myself","mine"],"a":1,"e":"Subject হিসেবে Nominative case 'I' বসে; 'You and I' — politeness-এর জন্য 'you' আগে।"}]}]},{"key":"tue","idx":1,"name":"Tuesday","slot":"Science: SI units, measurements, motion, force and everyday examples","subs":[{"id":"units","title":"Science — SI Units, Measurement & Everyday Examples","note":"SI base units, derived units, conversions and measuring instruments.","qs":[{"q":"SI পদ্ধতিতে মূল (base) এককের সংখ্যা কত?","o":["৫টি","৬টি","৭টি","৯টি"],"a":2,"e":"SI-র ৭টি মূল একক — মিটার, কিলোগ্রাম, সেকেন্ড, অ্যাম্পিয়ার, কেলভিন, মোল ও ক্যান্ডেলা।"},{"q":"দৈর্ঘ্যের SI মূল একক কী?","o":["সেন্টিমিটার","মিটার","ফুট","অ্যাংস্ট্রম"],"a":1,"e":"দৈর্ঘ্যের SI মূল একক মিটার (m), প্রতীক 'm'।"},{"q":"ভরের SI মূল একক কী?","o":["গ্রাম","কিলোগ্রাম","নিউটন","পাউন্ড"],"a":1,"e":"ভরের SI মূল একক কিলোগ্রাম (kg); বলের একক নিউটন, ওজন বলের মাপ।"},{"q":"সময়ের SI মূল একক কী?","o":["মিনিট","ঘণ্টা","সেকেন্ড","বছর"],"a":2,"e":"সময়ের SI মূল একক সেকেন্ড (s)।"},{"q":"তাপমাত্রার SI মূল একক কী?","o":["সেলসিয়াস","ফারেনহাইট","কেলভিন","র‍্যাঙ্কিন"],"a":2,"e":"তাপমাত্রার SI মূল একক কেলভিন (K); ডিগ্রি চিহ্ন ব্যবহার করা হয় না।"},{"q":"তড়িৎপ্রবাহের (electric current) SI মূল একক কী?","o":["ভোল্ট","ওহম","অ্যাম্পিয়ার","কুলম্ব"],"a":2,"e":"তড়িৎপ্রবাহের SI একক অ্যাম্পিয়ার (A); আধান = কুলম্ব (C), বিভব = ভোল্ট (V)।"},{"q":"পদার্থের পরিমাণ (amount of substance) -এর SI একক কী?","o":["গ্রাম-অণু","মোল","লিটার","ক্যান্ডেলা"],"a":1,"e":"পদার্থের পরিমাণের SI মূল একক মোল (mol)।"},{"q":"দীপন তীব্রতার (luminous intensity) SI মূল একক কী?","o":["লুমেন","লাক্স","ক্যান্ডেলা","ওয়াট"],"a":2,"e":"দীপন তীব্রতার SI মূল একক ক্যান্ডেলা (cd); আলোকমাত্রা = লুমেন, দীপন = লাক্স।"},{"q":"বলের SI একক কী?","o":["ডাইন","নিউটন","জুল","পাস্কাল"],"a":1,"e":"বলের SI একক নিউটন (N) = ১ কেজি·মি/সে²।"},{"q":"কাজ ও শক্তির (work & energy) SI একক কী?","o":["ওয়াট","জুল","নিউটন-মিটার/সেকেন্ড","আর্গ"],"a":1,"e":"কাজ ও শক্তির SI একক জুল (J) = ১ নিউটন × ১ মিটার।"},{"q":"ক্ষমতার (power) SI একক কী?","o":["জুল","ওয়াট","নিউটন","ক্যালোরি"],"a":1,"e":"ক্ষমতার SI একক ওয়াট (W) = ১ জুল/সেকেন্ড; ১ অশ্বশক্তি ≈ ৭৪৬ ওয়াট।"},{"q":"চাপের (pressure) SI একক কী?","o":["পাস্কাল","ব্যার","এটমোস্ফিয়ার","ডাইন/সেমি²"],"a":0,"e":"চাপের SI একক পাস্কাল (Pa) = ১ নিউটন/মিটার²; ১ বার = ১০⁵ Pa।"},{"q":"১ নিউটন = কত ডাইন?","o":["১০³ ডাইন","১০⁴ ডাইন","১০⁵ ডাইন","১০⁷ ডাইন"],"a":2,"e":"১ N = ১০⁵ ডাইন (CGS পদ্ধতিতে বলের একক ডাইন)।"},{"q":"১ জুল = কত আর্গ?","o":["১০⁵ আর্গ","১০⁶ আর্গ","১০⁷ আর্গ","১০⁹ আর্গ"],"a":2,"e":"১ জুল = ১০⁷ আর্গ (CGS-এ শক্তির একক আর্গ)।"},{"q":"১ ক্যালোরি (calorie) = কত জুল?","o":["২.১৮ জুল","৩.১৮ জুল","৪.১৮ জুল","৯.৮ জুল"],"a":2,"e":"১ ক্যালোরি ≈ ৪.১৮ জুল; ১ kcal = ৪১৮০ জুল।"},{"q":"০° সেলসিয়াস = কত কেলভিন?","o":["০ K","২৭৩ K","২৭৩.১৫ K","৩৭৩ K"],"a":2,"e":"K = °C + ২৭৩.১৫; তাই ০°C = ২৭৩.১৫ K এবং ১০০°C = ৩৭৩.১৫ K।"},{"q":"কোন তাপমাত্রায় ফারেনহাইট ও সেলসিয়াস স্কেলের পাঠ সমান হয়?","o":["০°","−৪০°","−১৭৩°","৩২°"],"a":1,"e":"−৪০° তাপমাত্রায় F = C; সূত্র F = (৯/৫)C + ৩২ থেকে পাওয়া যায়।"},{"q":"১ অ্যাংস্ট্রম (Å) = কত মিটার?","o":["১০⁻⁹ m","১০⁻¹⁰ m","১০⁻¹² m","১০⁻⁶ m"],"a":1,"e":"১ Å = ১০⁻¹⁰ মিটার; পারমাণবিক আকার মাপার জন্য ব্যবহৃত হয়।"},{"q":"১ ন্যানোমিটার (nm) = কত মিটার?","o":["১০⁻⁶ m","১০⁻⁹ m","১০⁻¹⁰ m","১০⁻¹² m"],"a":1,"e":"১ nm = ১০⁻⁹ মিটার (১ মাইক্রন = ১০⁻⁶ m, ১ পিকোমিটার = ১০⁻¹² m)।"},{"q":"আলোকবর্ষ (light year) কীসের একক?","o":["সময়ের","দূরত্বের","আলোর তীব্রতার","গতির"],"a":1,"e":"আলোকবর্ষ = এক বছরে আলো যে দূরত্ব যায় ≈ ৯.৪৬ × ১০¹² কিলোমিটার।"},{"q":"১ পারসেক (parsec) = কত আলোকবর্ষ?","o":["১.২৬ আলোকবর্ষ","৩.২৬ আলোকবর্ষ","৯.৪৬ আলোকবর্ষ","১০ আলোকবর্ষ"],"a":1,"e":"১ পারসেক ≈ ৩.২৬ আলোকবর্ষ ≈ ৩.০৮ × ১০¹⁶ মিটার — জ্যোতির্বিজ্ঞানে দূরত্বের একক।"},{"q":"পারমাণবিক ভর একক (amu) -কে এখন কী বলা হয়?","o":["ডালটন","ইউনিফায়েড অ্যাটমিক ম্যাস ইউনিট (u)","মোল","ক্যারট"],"a":1,"e":"১ u (আগে amu) = কার্বন-১২ পরমাণুর ভরের ১/১২ অংশ = ১.৬৬ × ১০⁻²⁷ কেজি।"},{"q":"ভার্নিয়ার ক্যালিপার্সের সাধারণ ন্যূনতম গণন (least count) কত?","o":["০.০১ সেমি","০.০১ মিমি","০.০০১ সেমি","১ মিমি"],"a":0,"e":"স্লাইড/ভার্নিয়ার ক্যালিপার্সের LC সাধারণত ০.১ মিমি = ০.০১ সেমি।"},{"q":"স্ক্রু-গজের (screw gauge) ন্যূনতম গণন সাধারণত কত?","o":["০.১ মিমি","০.০১ মিমি (০.০০১ সেমি)","১ মিমি","০.০০০১ মিমি"],"a":1,"e":"স্ক্রু-গজের LC = ০.০১ মিমি = ০.০০১ সেমি; তারের ব্যাস বা পাতের পুরুত্ব মাপতে ব্যবহৃত হয়।"},{"q":"একটি সাধারণ মিটার স্কেলের ন্যূনতম গণন কত?","o":["১ সেমি","১ মিমি","০.১ মিমি","০.০১ মিমি"],"a":1,"e":"মিটার স্কেলে ক্ষুদ্রতম ভাগ ১ মিমি, তাই LC = ১ মিমি = ০.১ সেমি।"},{"q":"স্ক্রু-গজ দিয়ে প্রধানত কী মাপা হয়?","o":["তার/পাতের পুরুত্ব ও ব্যাস","নদীর গভীরতা","শরীরের ওজন","কক্ষের তাপমাত্রা"],"a":0,"e":"স্ক্রু-গজ সূক্ষ্ম ব্যাস/পুরুত্ব মাপে; ক্যালিপার্স দিয়ে বস্তুর দৈর্ঘ্য ও অভ্যন্তরীণ ব্যাস মাপা হয়।"},{"q":"পরিমাপের ত্রুটি প্রধানত ক-টি ধরনের হয়?","o":["২টি — পদ্ধতিগত (systematic) ও আকস্মিক (random)","৩টি","১টি","৪টি"],"a":0,"e":"ত্রুটি প্রধানত পদ্ধতিগত (যন্ত্র/পদ্ধতিজনিত, যেমন zero error) ও আকস্মিক (random) — দুই প্রকার।"},{"q":"সিজিয়াম-১৩৩ পরমাণুর স্পন্দন দিয়ে কোন একককে সংজ্ঞায়িত করা হয়?","o":["মিটার","সেকেন্ড","কিলোগ্রাম","কেলভিন"],"a":1,"e":"১ সেকেন্ড = সিজিয়াম-১৩৩ পরমাণুর ৯,১৯২,৬৩১,৭৭০টি নির্দিষ্ট স্পন্দনের সময়কাল।"},{"q":"২০১৯ সালের SI পুনঃসংজ্ঞায় কিলোগ্রাম কোন ধ্রুবকের ভিত্তিতে নির্ধারিত হয়?","o":["প্ল্যাঙ্ক ধ্রুবক","আলোর বেগ","বোলৎজম্যান ধ্রুবক","অ্যাভোগাড্রো সংখ্যা"],"a":0,"e":"কিলোগ্রাম এখন প্ল্যাঙ্ক ধ্রুবক (h)-এর নির্দিষ্ট মানের ভিত্তিতে সংজ্ঞায়িত।"},{"q":"লিটার (litre) নিম্নলিখিত কোন রাশির একক?","o":["ভর","আয়তন","ঘনত্ব","চাপ"],"a":1,"e":"লিটার আয়তনের একক (১ L = ১০⁻³ m³ = ১০০০ cm³); SI একক নয়, তবে বহুল ব্যবহৃত।"}]},{"id":"motion","title":"Science — Motion, Force & Everyday Examples","note":"Newton's laws with everyday examples, vectors, friction and gravity.","qs":[{"q":"নিউটনের গতিসূত্র কতটি?","o":["২টি","৩টি","৪টি","৫টি"],"a":1,"e":"নিউটনের তিনটি গতিসূত্র — জাড্যের সূত্র, ত্বরণের সূত্র, ক্রিয়া-প্রতিক্রিয়ার সূত্র।"},{"q":"স্টেশন ছাড়ার সময় বাস হঠাৎ চললে যাত্রীরা পিছনে ঢলে পড়েন — কারণ —","o":["ভরবেগের","জাড্য বা জড়তার (inertia)","মাধ্যাকর্ষণের","ঘর্ষণের"],"a":1,"e":"স্থির বস্তু স্থির থাকতে চায় — এটাই জাড্য; বাস এগোলে শরীরের নিচের অংশ এগোয়, উপরস্থ অংশ পিছিয়ে যায়।"},{"q":"নিউটনের দ্বিতীয় সূত্রের গাণিতিক রূপ কোনটি?","o":["F = mv","F = ma","F = m/a","F = at"],"a":1,"e":"নিউটনের দ্বিতীয় সূত্র: বস্তুর ভরবেগের পরিবর্তনের হার আরোপিত বলের সমানুপাতিক ⇒ F = ma।"},{"q":"নিউটনের তৃতীয় সূত্র অনুসারে —","o":["বল সবসময় ধ্রুবক","প্রতিটি ক্রিয়ার সমান ও বিপরীত প্রতিক্রিয়া থাকে","বস্তু স্থির থাকে","ত্বরণ শূন্য"],"a":1,"e":"প্রতিটি ক্রিয়ার সমান, বিপরীতমুখী ও ভিন্ন বস্তুতে প্রযুক্ত প্রতিক্রিয়া থাকে (action–reaction)।"},{"q":"ভরবেগ (momentum) -এর SI একক কোনটি?","o":["কেজি·মি/সে","নিউটন","জুল","কেজি·মি/সে²"],"a":0,"e":"ভরবেগ p = mv, একক kg·m/s বা N·s; এটি ভেক্টর রাশি।"},{"q":"বলের ঘাত (impulse) কিসের সমান?","o":["বল × সময় = ভরবেগের পরিবর্তন","বল × দূরত্ব","ভর × ত্বরণ","ভর × গতিবেগ"],"a":0,"e":"ঘাত = F × t = Δp; এজন্যই এয়ারব্যাগ ও হেলমেট সংঘর্ষের সময় বাড়িয়ে বল কমায়।"},{"q":"ঘর্ষণ বলের দিক সবসময় —","o":["গতির দিকে","গতির বিপরীত দিকে","উল্লম্ব দিকে","অনিশ্চিত"],"a":1,"e":"ঘর্ষণ বল সবসময় বস্তুর গতির (বা গতির প্রবণতার) বিপরীত দিকে ক্রিয়া করে এবং তাপ উৎপন্ন করে।"},{"q":"পৃথিবীর পৃষ্ঠে অভিকর্ষজ ত্বরণের (g) মান কত?","o":["৯.৮ m/s²","৯৮ m/s²","০.৯৮ m/s²","৮ m/s²"],"a":0,"e":"পৃথিবীর পৃষ্ঠে g ≈ ৯.৮ মিটার/সেকেন্ড²; চাঁদে ≈ ১.৬ m/s²।"},{"q":"ওজন (weight) -এর SI একক কী?","o":["কিলোগ্রাম","নিউটন","জুল","গ্রাম"],"a":1,"e":"ওজন W = mg একটি বল, তাই একক নিউটন; ভরের একক কিলোগ্রাম।"},{"q":"অভিকর্ষজ ত্বরণ g সর্বাধিক হয় কোথায়?","o":["বিষুবরেখায়","মেরুতে","পর্বতশৃঙ্গে","খনির গভীরে"],"a":1,"e":"পৃথিবীর আকার উপবৃত্তাকার হওয়ায় মেরুতে মেরুকেন্দ্রিক দূরত্ব কম, তাই g সবচেয়ে বেশি (≈ ৯.৮৩ m/s²)।"},{"q":"চাঁদে নভোচারীর ওজন কমে যায়, কিন্তু অপরিবর্তিত থাকে —","o":["ভর","ঘনত্ব","গতিশক্তি","উচ্চতা"],"a":0,"e":"ভর বস্তুর অপরিবর্তিত ধর্ম, সব জায়গায় সমান; ওজন = mg, চাঁদে g কম তাই ওজন কম।"},{"q":"বৃত্তপথে ঘোরার সময় কেন্দ্রের দিকে যে বল ক্রিয়া করে তা হল —","o":["কেন্দ্রাতিগ বল","কেন্দ্রমুখী বল","মাধ্যাকর্ষণ বল","ঘর্ষণ বল"],"a":1,"e":"বৃত্তীয় গতিতে কেন্দ্রমুখী বল (centripetal force) দরকার; কেন্দ্রাতিগ বল হল কাল্পনিক/অভিকেন্দ্রিক প্রতিক্রিয়া।"},{"q":"রকেটের উড্ডয়ন কোন নীতির উপর ভিত্তি করে?","o":["শক্তির সংরক্ষণ","ভরবেগের সংরক্ষণ","ভরের সংরক্ষণ","তাপগতিবিজ্ঞান"],"a":1,"e":"রকেট জ্বালানি পিছনে ছুড়ে দেয়, প্রতিক্রিয়ায় রকেট সামনে এগোয় — ভরবেগ সংরক্ষণ + নিউটনের তৃতীয় সূত্র।"},{"q":"গতির প্রথম সমীকরণ কোনটি?","o":["s = ut + ½at²","v = u + at","v² = u² + 2as","s = vt"],"a":1,"e":"গতির সমীকরণ: v = u + at; দ্বিতীয় s = ut + ½at²; তৃতীয় v² = u² + 2as।"},{"q":"বেগ-সময় (v–t) লেখচিত্রের ঢাল (slope) কী প্রকাশ করে?","o":["দূরত্ব","দ্রুতি","ত্বরণ","ভরবেগ"],"a":2,"e":"v–t গ্রাফের ঢাল = ত্বরণ, আর গ্রাফের নিচের ক্ষেত্রফল = অতিক্রান্ত দূরত্ব।"},{"q":"দূরত্ব-সময় (s–t) লেখচিত্রের ঢাল কী প্রকাশ করে?","o":["ত্বরণ","দ্রুতি/বেগ","বল","কার্য"],"a":1,"e":"s–t লেখচিত্রের ঢাল = দ্রুতি (speed); সমানুপাতিক সরলরেখা হলে গতি সমবেগে।"},{"q":"নিচের কোনটি ভেক্টর রাশি?","o":["দ্রুতি (speed)","সময়","বেগ (velocity)","ভর"],"a":2,"e":"বেগ, সরণ, বল, ওজন, ত্বরণ — ভেক্টর; দ্রুতি, দূরত্ব, সময়, ভর — স্কেলার।"},{"q":"নিচের কোনটি স্কেলার রাশি?","o":["সরণ","বল","দ্রুতি","ভরবেগ"],"a":2,"e":"দ্রুতির সঙ্গে দিকের সম্পর্ক নেই, তাই এটি স্কেলার; সরণ ও বল ভেক্টর।"},{"q":"বন্দুক থেকে গুলি ছুড়লে বন্দুক পিছনে ধাক্কা দেয় — এর কারণ —","o":["ঘর্ষণ বল","ভরবেগ সংরক্ষণের সূত্র","কেন্দ্রমুখী বল","মাধ্যাকর্ষণ"],"a":1,"e":"গুলি এগোলে বন্দুক পিছিয়ে যায়; মোট ভরবেগ শূন্য থাকে — একে 'রিকয়েল' বলা হয়।"},{"q":"মুক্ত পতনে (free fall) নিক্ষিপ্ত বস্তুর প্রাথমিক বেগ কত?","o":["g","শূন্য","৯.৮ m/s","২g"],"a":1,"e":"মুক্ত পতনে u = 0, ত্বরণ = g = ৯.৮ m/s² (বায়ুর বাধা না ধরে)।"},{"q":"ঘর্ষণের প্রধান প্রকারভেদ কোনটি?","o":["স্থিতি, গতীয় ও ঘূর্ণন ঘর্ষণ","শুষ্ক ও আর্দ্র","অভ্যন্তরীণ ও বাহ্যিক","স্থিতি ও তড়িৎ"],"a":0,"e":"ঘর্ষণ প্রধানত তিন প্রকার — statical, sliding (kinetic) ও rolling ঘর্ষণ।"},{"q":"চাকা/বল-বেয়ারিং ঘর্ষণ কমায় কেন?","o":["পৃষ্ঠ ক্ষেত্রফল কমায়","ঘূর্ণন ঘর্ষণ চুঁইয়ে-পিছলে চলার ঘর্ষণের চেয়ে কম","ভর কমায়","g কমায়"],"a":1,"e":"ঘূর্ণন ঘর্ষণ চলন ঘর্ষণের তুলনায় অনেক কম, তাই বল-বেয়ারিং ব্যবহার করা হয়।"},{"q":"একটি বস্তু সমবেগে চললে তার ত্বরণ কত?","o":["শূন্য","ধ্রুবক","ক্রমবর্ধমান","ঋণাত্মক"],"a":0,"e":"সমবেগ = দ্রুতি ও দিক অপরিবর্তিত ⇒ বেগের পরিবর্তন নেই ⇒ ত্বরণ শূন্য।"},{"q":"মোটরগাড়িতে সিটবেল্ট ও হেলমেট ব্যবহার করা হয় কেন?","o":["সাজের জন্য","সংঘর্ষের সময় বেড়ে বল কমাতে (ঘাত বাড়িয়ে বল হ্রাস)","ভর বাড়াতে","ঘর্ষণ বাড়াতে"],"a":1,"e":"ঘাত = বল × সময়; সময় বাড়ালে বল কমে — তাই আঘাত সহনীয় হয়।"},{"q":"নিউটনের প্রথম সূত্রের অপর নাম কী?","o":["ত্বরণের সূত্র","জাড্যের সূত্র","ভরবেগের সূত্র","মাধ্যাকর্ষণ সূত্র"],"a":1,"e":"প্রথম সূত্র (জাড্যের সূত্র): বাহ্যিক বল না থাকলে স্থির বস্তু স্থির, চলমান বস্তু সমবেগে চলে।"},{"q":"বল × সময় = কিসের পরিবর্তন?","o":["শক্তির","ভরবেগের","দূরত্বের","শক্তির ঘনত্বের"],"a":1,"e":"বলের ঘাত (impulse) = ভরবেগের পরিবর্তন (Δp) — নিউটনের দ্বিতীয় সূত্রের অন্য রূপ।"},{"q":"একটি বস্তুর গতিশক্তি (kinetic energy) বেগের সঙ্গে কীভাবে পরিবর্তিত হয়?","o":["বেগের সমানুপাতিক","বেগের বর্গের সমানুপাতিক","বেগের ব্যস্তানুপাতিক","বেগের ঘনফলের সমানুপাতিক"],"a":1,"e":"KE = ½mv²; তাই বেগ দ্বিগুণ হলে গতিশক্তি চার গুণ হয়।"},{"q":"নিচের কোনটি ধ্রুবক ত্বরণের উদাহরণ?","o":["মুক্ত পতনকারী বস্তু","স্থির বস্তু","বৃত্তে সমবেগে ঘোরা গাড়ি","থেমে থাকা ঘড়ি"],"a":0,"e":"মুক্ত পতনে ত্বরণ = g (ধ্রুবক); বৃত্তীয় গতিতে দিক বদলায় বলে ত্বরণ পরিবর্তিত হয়।"},{"q":"ঘর্ষণ বল সর্বদা যা উৎপন্ন করে —","o":["শব্দ ও তাপ","কেবল আলো","কেবল বিদ্যুৎ","কেবল শব্দ"],"a":0,"e":"ঘর্ষণ যান্ত্রিক শক্তিকে তাপে (ও শব্দে) রূপান্তরিত করে — যেমন হাত ঘষলে উষ্ণ হয়।"},{"q":"'বেগের পরিবর্তনের হার'-কে বলা হয় —","o":["দ্রুতি","ত্বরণ","ভরবেগ","বল"],"a":1,"e":"ত্বরণ = বেগের পরিবর্তন/সময়, একক m/s²; এটি ভেক্টর রাশি।"}]}]},{"key":"wed","idx":2,"name":"Wednesday","slot":"Geography: Earth, continents, oceans, latitudes, longitudes | English: Verb, Adjective, Adverb","subs":[{"id":"earth","title":"Geography — Earth, Continents & Oceans","note":"Largest/smallest/deepest facts, oceans, continents and tides.","qs":[{"q":"পৃথিবীতে মহাদেশের সংখ্যা কত?","o":["৫টি","৬টি","৭টি","৮টি"],"a":2,"e":"সাতটি মহাদেশ — এশিয়া, আফ্রিকা, উত্তর আমেরিকা, দক্ষিণ আমেরিকা, অ্যান্টার্কটিকা, ইউরোপ, অস্ট্রেলিয়া।"},{"q":"আয়তনের দিক থেকে বৃহত্তম মহাদেশ কোনটি?","o":["আফ্রিকা","এশিয়া","উত্তর আমেরিকা","ইউরোপ"],"a":1,"e":"এশিয়া পৃথিবীর বৃহত্তম মহাদেশ — স্থলভাগের প্রায় ৩০% এবং জনসংখ্যার প্রায় ৬০% এখানে।"},{"q":"আয়তনে ক্ষুদ্রতম মহাদেশ কোনটি?","o":["ইউরোপ","অ্যান্টার্কটিকা","অস্ট্রেলিয়া (ওশেনিয়া)","দক্ষিণ আমেরিকা"],"a":2,"e":"অস্ট্রেলিয়া আয়তনে ক্ষুদ্রতম মহাদেশ; জনসংখ্যায়ও সবচেয়ে কম (অ্যান্টার্কটিকায় স্থায়ী জনবসতি নেই)।"},{"q":"পৃথিবীতে মহাসাগরের সংখ্যা কত?","o":["৩টি","৪টি","৫টি","৬টি"],"a":2,"e":"৫টি মহাসাগর — প্রশান্ত, আটলান্টিক, ভারত, আর্কটিক (সুমেরু) ও দক্ষিণ (কুমেরু/অ্যান্টার্কটিক)।"},{"q":"আয়তনে বৃহত্তম মহাসাগর কোনটি?","o":["আটলান্টিক","ভারত","প্রশান্ত","আর্কটিক"],"a":2,"e":"প্রশান্ত (Pacific) মহাসাগর বৃহত্তম; পৃথিবীর মোট জলভাগের প্রায় অর্ধেক এবং পৃষ্ঠের প্রায় ১/৩ অংশ।"},{"q":"পৃথিবীর গভীরতম স্থান (পরিখা) কোনটি?","o":["সুন্ডা পরিখা","মারিয়ানা ট্রেঞ্চ","পুয়ের্তো রিকো ট্রেঞ্চ","টঙ্গা ট্রেঞ্চ"],"a":1,"e":"প্রশান্ত মহাসাগরের মারিয়ানা ট্রেঞ্চে 'চ্যালেঞ্জার ডিপ' ≈ ১১,০৩৪ মিটার — পৃথিবীর গভীরতম বিন্দু।"},{"q":"মারিয়ানা ট্রেঞ্চের গভীরতম বিন্দুর নাম কী?","o":["চ্যালেঞ্জার ডিপ","গুয়াম ডিপ","জাভা ডিপ","কুরিল ডিপ"],"a":0,"e":"চ্যালেঞ্জার ডিপ (≈ ১০,৯৯৪–১১,০৩৪ মিটার) প্রশান্ত মহাসাগরে, মারিয়ানা দ্বীপপুঞ্জের কাছে।"},{"q":"পৃথিবীর বৃহত্তম দ্বীপ কোনটি?","o":["বোর্নিও","নিউ গিনি","গ্রিনল্যান্ড","মাদাগাস্কার"],"a":2,"e":"গ্রিনল্যান্ড (ডেনমার্কের অধীন) পৃথিবীর বৃহত্তম দ্বীপ; অস্ট্রেলিয়াকে মহাদেশ ধরা হয়।"},{"q":"পৃথিবীর গড় ব্যাসার্ধ কত?","o":["৬,৩৭১ কিমি","৬,৭৩১ কিমি","৭,৯২৬ কিমি","৪০,০৭৫ কিমি"],"a":0,"e":"পৃথিবীর গড় ব্যাসার্ধ ≈ ৬,৩৭১ কিমি; বিষুবীয় ব্যাসার্ধ ৬,৩৭৮ কিমি ও মেরু-ব্যাসার্ধ ৬,৩৫৭ কিমি।"},{"q":"পৃথিবীর বিষুবরেখার মোট দৈর্ঘ্য কত?","o":["৩৬,০০০ কিমি","৪০,০৭৫ কিমি","৫০,০০০ কিমি","৩৫,৭৮৬ কিমি"],"a":1,"e":"বিষুবরেখার পরিধি ≈ ৪০,০৭৫ কিমি (পৃথিবীর প্রায় ২৪,৯০১ মাইল)।"},{"q":"পৃথিবীর একবার নিজ অক্ষে ঘূর্ণনের (rotation) সময় কত?","o":["১২ ঘণ্টা","২৩ ঘণ্টা ৫৬ মিনিট ৪ সেকেন্ড","২৪ ঘণ্টা","৩৬৫ দিন"],"a":1,"e":"নাক্ষত্রিক দিন ২৩ ঘণ্টা ৫৬ মিনিট ৪ সেকেন্ড; সৌর দিন প্রায় ২৪ ঘণ্টা।"},{"q":"সূর্যকে একবার পরিক্রমণ (revolution) করতে পৃথিবীর সময় লাগে —","o":["৩৬৫ দিন ৬ ঘণ্টা","৩৬০ দিন","৩৬৬ দিন","৩৬৫ দিন ২৪ ঘণ্টা"],"a":0,"e":"পৃথিবীর পরিক্রমণকাল ৩৬৫ দিন ৬ ঘণ্টা ≈ ৩৬৫¼ দিন; লিপ ইয়ারে ৩৬৬ দিন ধরা হয়।"},{"q":"সৌরজগতে সূর্য থেকে পৃথিবী কততম গ্রহ?","o":["২য়","৩য়","৪র্থ","৫ম"],"a":1,"e":"বুধ (১) – শুক্র (২) – পৃথিবী (৩) – মঙ্গল (৪) — পৃথিবী তৃতীয় গ্রহ।"},{"q":"পৃথিবীর বায়ুমণ্ডলে সর্বাধিক পরিমাণে থাকা গ্যাস কোনটি?","o":["অক্সিজেন","কার্বন ডাই-অক্সাইড","নাইট্রোজেন","আর্গন"],"a":2,"e":"নাইট্রোজেন ≈ ৭৮%, অক্সিজেন ≈ ২১%, আর্গন ≈ ০.৯%, কার্বন ডাই-অক্সাইড ≈ ০.০৪%।"},{"q":"পৃথিবীকে 'নীল গ্রহ' বলা হয় কেন?","o":["বায়ুমণ্ডলের জন্য","জলভাগের আধিক্যের জন্য","আকাশের রঙের জন্য","বরফের আচ্ছাদনের জন্য"],"a":1,"e":"পৃষ্ঠের প্রায় ৭১% জল, তাই মহাকাশ থেকে পৃথিবী নীল দেখায় — একে 'নীল গ্রহ' বলা হয়।"},{"q":"পৃথিবীর মোট পৃষ্ঠের কত শতাংশ স্থলভাগ?","o":["২৯%","৩১%","৪০%","৫০%"],"a":0,"e":"স্থলভাগ ≈ ২৯% এবং জলভাগ ≈ ৭১% — মহাদেশ ও মহাসাগরের এই অনুপাত প্রায় ১:২.৫।"},{"q":"'প্যানজিয়া' ও 'প্যানথালাসা' তত্ত্ব কে প্রস্তাব করেন?","o":["আলফ্রেড ভেগেনার","ওয়েগেনার ও জেফ্রিস","নিউটন","টলেমি"],"a":0,"e":"১৯১২ সালে আলফ্রেড ভেগেনার মহাদেশীয় সঞ্চরণ (Continental Drift) তত্ত্বে প্যানজিয়া ও প্যানথালাসার কথা বলেন।"},{"q":"মহাদেশীয় সঞ্চরণ তত্ত্ব অনুসারে প্রাচীন একক মহাদেশের নাম কী?","o":["গন্ডোয়ানা","প্যানজিয়া","টেথিস","আঙ্গারাল্যান্ড"],"a":1,"e":"প্রাচীন কালে সমস্ত স্থলভাগ একত্রে 'প্যানজিয়া' এবং চারপাশে মহাসাগর 'প্যানথালাসা' ছিল।"},{"q":"ভারতীয় উপমহাদেশ প্রথমে কোন প্রাচীন ভূখণ্ডের অংশ ছিল?","o":["আঙ্গারাল্যান্ড","গন্ডোয়ানা","লরেশিয়া","প্যানথালাসা"],"a":1,"e":"গন্ডোয়ানা ভেঙে ভারতীয় পাত (plate) উত্তরে সরে এসে এশিয়ার সঙ্গে যুক্ত হয় — হিমালয়ের সৃষ্টি।"},{"q":"মহাদেশগুলির আয়তন অনুসারে সঠিক ক্রম কোনটি?","o":["এশিয়া > আফ্রিকা > উত্তর আমেরিকা > দক্ষিণ আমেরিকা > অ্যান্টার্কটিকা > ইউরোপ > অস্ট্রেলিয়া","এশিয়া > আফ্রিকা > উত্তর আমেরিকা > অ্যান্টার্কটিকা > দক্ষিণ আমেরিকা > ইউরোপ > অস্ট্রেলিয়া","আফ্রিকা > এশিয়া > উত্তর আমেরিকা > দক্ষিণ আমেরিকা > ইউরোপ > অ্যান্টার্কটিকা > অস্ট্রেলিয়া","এশিয়া > উত্তর আমেরিকা > আফ্রিকা > দক্ষিণ আমেরিকা > অ্যান্টার্কটিকা > ইউরোপ > অস্ট্রেলিয়া"],"a":0,"e":"আয়তনক্রম: এশিয়া > আফ্রিকা > উত্তর আমেরিকা > দক্ষিণ আমেরিকা > অ্যান্টার্কটিকা > ইউরোপ > অস্ট্রেলিয়া।"},{"q":"শীতলতম মহাদেশ কোনটি?","o":["ইউরোপ","অ্যান্টার্কটিকা","এশিয়া","উত্তর আমেরিকা"],"a":1,"e":"অ্যান্টার্কটিকা শীতলতম মহাদেশ; এখানে পৃথিবীর সর্বনিম্ন তাপমাত্রা (−৮৯.২°C, ভোস্টক) রেকর্ড হয়েছে।"},{"q":"অ্যান্টার্কটিকাকে কী বলা হয়?","o":["হলুদ মহাদেশ","সবুজ মহাদেশ","শ্বেত মহাদেশ","লাল মহাদেশ"],"a":2,"e":"বরফে ঢাকা থাকার কারণে অ্যান্টার্কটিকাকে 'শ্বেত মহাদেশ' বলা হয়।"},{"q":"পৃথিবীর বৃহত্তম মরুভূমি (মোট আয়তনে) কোনটি?","o":["সাহারা","থর","অ্যান্টার্কটিকা (শীতল মরুভূমি)","গোবি"],"a":2,"e":"বৃষ্টিপাত-শূন্য বরফের মালভূমি হিসেবে অ্যান্টার্কটিকা বৃহত্তম মরুভূমি; উষ্ণ মরুভূমির মধ্যে সাহারা বৃহত্তম।"},{"q":"জোয়ার-ভাঁটার (tide) প্রধান কারণ কী?","o":["পৃথিবীর ঘূর্ণন","চাঁদ ও সূর্যের মহাকর্ষীয় আকর্ষণ","পৃথিবীর মাধ্যাকর্ষণ","বায়ুচাপ"],"a":1,"e":"চাঁদ ও সূর্যের আকর্ষণে সমুদ্রজল ফুলে ওঠে — চাঁদের প্রভাব বেশি; প্রতি দিন দুবার জোয়ার হয়।"},{"q":"সর্বোচ্চ জোয়ারকে (spring tide) কখন দেখা যায়?","o":["অমাবস্যা ও পূর্ণিমায়","অষ্টমী ও চতুর্দশীতে","শুধু পূর্ণিমায়","যেকোনো দিনে"],"a":0,"e":"অমাবস্যা-পূর্ণিমায় সূর্য, পৃথিবী ও চাঁদ এক রেখায় থাকলে মিলিত আকর্ষণে spring tide হয়।"},{"q":"'রিং অফ ফায়ার' (Ring of Fire) মূলত কোথায় অবস্থিত?","o":["আটলান্টিক মহাসাগরে","প্রশান্ত মহাসাগরের চারপাশে","ভারত মহাসাগরে","উত্তর মেরুতে"],"a":1,"e":"প্রশান্ত মহাসাগরের চারপাশে অবস্থিত আগ্নেয়গিরি ও ভূমিকম্পের বলয়কে 'রিং অফ ফায়ার' বলা হয়।"},{"q":"পৃথিবীর সবচেয়ে বড় মহাসাগরীয় দ্বীপপুঞ্জ/দ্বীপসমষ্টি —","o":["মালদ্বীপ","ইন্দোনেশিয়া","জাপান","ফিলিপাইন"],"a":1,"e":"ইন্দোনেশিয়া বিশ্বের বৃহত্তম দ্বীপপুঞ্জ (archipelago) রাষ্ট্র — প্রায় ১৭,০০০-এর বেশি দ্বীপ।"},{"q":"ভারত মহাসাগরের গভীরতম স্থান কোনটি?","o":["সুন্ডা (জাভা) পরিখা","মারিয়ানা ট্রেঞ্চ","টঙ্গা ট্রেঞ্চ","আলেউশিয়ান পরিখা"],"a":0,"e":"ভারত মহাসাগরের গভীরতম বিন্দু সুন্ডা বা জাভা পরিখা (≈ ৭,২৫০ মিটার)।"},{"q":"নিচের কোনটি বিষুবরেখা অতিক্রম করে না?","o":["আফ্রিকা","দক্ষিণ আমেরিকা","এশিয়া","ইউরোপ"],"a":3,"e":"বিষুবরেখা এশিয়া, আফ্রিকা, দক্ষিণ আমেরিকা ও ওশেনিয়াকে অতিক্রম করে; ইউরোপ এ থেকে দূরে।"},{"q":"পৃথিবীর বৃহত্তম সক্রিয় আগ্নেয়গিরি (আয়তনে) কোথায় অবস্থিত?","o":["জাপান","হাওয়াই (মাউনা লোয়া)","ইতালি","ইন্দোনেশিয়া"],"a":1,"e":"হাওয়াইয়ের মাউনা লোয়া পৃথিবীর বৃহত্তম সক্রিয় আগ্নেয়গিরি; সর্বোচ্চ সক্রিয় আগ্নেয়গিরি ওখোস দেল সালাদো (আর্জেন্টিনা–চিলি)।"}]},{"id":"latlong","title":"Geography — Latitudes & Longitudes","note":"Latitude vs longitude, key lines, IST and the International Date Line.","qs":[{"q":"অক্ষরেখা (latitude) বলতে কী বোঝায়?","o":["উত্তর-দক্ষিণে টানা উল্লম্ব রেখা","বিষুবরেখার সমান্তরালে পূর্ব-পশ্চিমে টানা রেখা","মেরু থেকে মেরুতে টানা রেখা","সমুদ্রের গভীরতা রেখা"],"a":1,"e":"অক্ষরেখা হল বিষুবরেখার সমান্তরাল কাল্পনিক রেখা, যা পূর্ব-পশ্চিমে বিস্তৃত ও কখনোই পরস্পরকে ছেদ করে নামহাসাগর"},{"q":"পৃথিবীতে অক্ষরেখার মোট সংখ্যা কত ধরা হয়?","o":["১২০টি","১৮০টি","১৮১টি","৩৬০টি"],"a":2,"e":"৯০টি উত্তর + ৯০টি দক্ষিণ + ১টি বিষুবরেখা = মোট ১৮১টি অক্ষরেখা (১° অন্তর)মহাসাগর"},{"q":"পৃথিবীতে দ্রাঘিমারেখার মোট সংখ্যা কত ধরা হয়?","o":["১৮০টি","৩৬০টি","৩৬১টি","৯০টি"],"a":1,"e":"১৮০টি পূর্ব + ১৮০টি পশ্চিম = মোট ৩৬০টি দ্রাঘিমারেখা (১° অন্তর); ০° ও ১৮০° একই রেখামহাসাগর"},{"q":"দ্রাঘিমারেখার দৈর্ঘ্য সম্পর্কে সঠিক তথ্য কোনটি?","o":["সব দ্রাঘিমারেখার দৈর্ঘ্য সমান","মেরুর দিকে বাড়ে","বিষুবরে খাটো","সব ভিন্ন"],"a":0,"e":"প্রতিটি দ্রাঘিমা অর্ধবৃত্ত (মেরু থেকে মেরু), তাই ALL meridians সমান লম্বা — অক্ষরেখা কিন্তু সমান নয়মহাসাগর"},{"q":"বিষুবরেখার অক্ষাংশ (latitude) কত?","o":["০°","২৩.৫°","৪৫°","৯০°"],"a":0,"e":"বিষুবরেখা শূন্য ডিগ্রি অক্ষাংশ; এটি পৃথিবীকে উত্তর ও দক্ষিণ গোলার্ধে ভাগ করেমহাসাগর"},{"q":"উত্তর মেরুর অক্ষাংশ কত?","o":["০°","৪৫° N","৯০° N","১৮০° N"],"a":2,"e":"উত্তর মেরু ৯০° উত্তর অক্ষাংশে এবং এর দ্রাঘিমা নির্ধারণ করা যায় না (সব দ্রাঘিমা এখানে মেলে)মহাসাগর"},{"q":"মূল মধ্যরেখা (Prime Meridian) কোথা দিয়ে যায়?","o":["নয়াদিল্লি","গ্রিনিচ (লন্ডন)","প্যারিস","নিউ ইয়র্ক"],"a":1,"e":"০° দ্রাঘিমা বা মূল মধ্যরেখা লন্ডনের গ্রিনিচ মানমন্দির (Royal Observatory) দিয়ে গেছেমহাসাগর"},{"q":"পৃথিবীর পৃষ্ঠে ১° অক্ষাংশের দূরত্ব আনুমানিক কত?","o":["৫৫ কিমি","১১১ কিমি","১৫০ কিমি","২২২ কিমি"],"a":1,"e":"১° অক্ষাংশ ≈ ১১১ কিমি (প্রায় ৬৪ মাইল), কারণ অক্ষরেখাগুলি সর্বদা সমান দূরত্বে থাকেমহাসাগর"},{"q":"দ্রাঘিমারেখাগুলির মধ্যে দূরত্ব সম্পর্কে সঠিক তথ্য কোনটি?","o":["সব জায়গায় সমান","মেরুর দিকে কমতে থাকে","মেরুর দিকে বাড়ে","বিষুবরে শূন্য"],"a":1,"e":"দ্রাঘিমারেখা মেরুতে মিলিত হয়; তাই মেরুর দিকে তাদের মধ্যবর্তী দূরত্ব শূন্যে পৌঁছায় এবং বিষুবরে সর্বাধিক (~১১১ কিমি)মহাসাগর"},{"q":"কর্কটক্রান্তি রেখার অক্ষাংশ কত?","o":["০°","২৩°২৬′ উত্তর","২৩°২৬′ দক্ষিণ","৬৬°৩৩′ উত্তর"],"a":1,"e":"কর্কটক্রান্তি (Tropic of Cancer) = ২৩°২৬′ N; মকরক্রান্তি (Tropic of Capricorn) = ২৩°২৬′ Sমহাসাগর"},{"q":"কর্কটক্রান্তি রেখা ভারতের কতটি রাজ্যের উপর দিয়ে গেছে?","o":["৬টি","৭টি","৮টি","৯টি"],"a":2,"e":"ভারতের ৮টি রাজ্য — গুজরাট, রাজস্থান, মধ্যপ্রদেশ, ছত্তিশগড়, ঝাড়খণ্ড, পশ্চিমবঙ্গ, ত্রিপুরা ও মিজোরামমহাসাগর"},{"q":"পশ্চিমবঙ্গের কোন দুই জেলার উপর দিয়ে কর্কটক্রান্তি রেখা গেছে?","o":["পুরুলিয়া ও বাঁকুড়া","বর্ধমান ও মুর্শিদাবাদ","মালদা ও নদীয়া","বীরভূম ও ঝাড়গ্রাম"],"a":0,"e":"পশ্চিমবঙ্গে কর্কটক্রান্তি রেখা পুরুলিয়া ও বাঁকুড়া জেলার উপর দিয়ে চলে গেছেমহাসাগর"},{"q":"সুমেরু বৃত্ত (Arctic Circle) -এর অক্ষাংশ কত?","o":["২৩°৩০′ N","৪৫° N","৬৬°৩৩′ N","৯০° N"],"a":2,"e":"সুমেরু বৃত্ত = ৬৬°৩৩′ N; কুমেরু বৃত্ত = ৬৬°৩৩′ S; এই দুইয়ের মধ্যে তাপমাত্রা অত্যন্ত কমমহাসাগর"},{"q":"সূর্য ২১ জুন লম্বভাবে (খাড়াভাবে) কিসের উপর থাকে?","o":["বিষুবরেখা","কর্কটক্রান্তি","মকরক্রান্তি","সুমেরু বৃত্ত"],"a":1,"e":"২১ জুন সূর্য কর্কটক্রান্তির উপর লম্বভাবে পড়ে — উত্তর গোলার্ধে দিন দীর্ঘতম, রাত ছোট (গ্রীষ্মকালীন অয়নায়ন)মহাসাগর"},{"q":"সূর্য ২২ ডিসেম্বর লম্বভাবে কিসের উপর থাকে?","o":["বিষুবরেখা","কর্কটক্রান্তি","মকরক্রান্তি","কুমেরু বৃত্ত"],"a":2,"e":"২২ ডিসেম্বর সূর্য মকরক্রান্তির উপর লম্বভাবে পড়ে — উত্তর গোলার্ধে রাত দীর্ঘতম, দিন ছোট (শীতকালীন অয়নায়ন)মহাসাগর"},{"q":"২১ মার্চ ও ২৩ সেপ্টেম্বর — এই দুই তারিখে কী ঘটে?","o":["অয়নায়ন (solstice)","বিষুব (equinox) — দিন ও রাত সমান","সূর্যগ্রহণ","জোয়ার-ভাঁটা"],"a":1,"e":"সূর্য তখন বিষুবরেখার উপর লম্বভাবে পড়ে, তাই সারা পৃথিবীতে দিন-রাত প্রায় সমান (equinox)মহাসাগর"},{"q":"ভারতের প্রামাণ্য দ্রাঘিমা (Standard Meridian) কোনটি?","o":["৮২°৩০′ পূর্ব","৮২°৩০′ পশ্চিম","৯০° পূর্ব","৭৫° পূর্ব"],"a":0,"e":"ভারতের প্রামাণ্য দ্রাঘিমা ৮২°৩০′ E; এটি উত্তরপ্রদেশের মিরজাপুরের কাছে দিয়ে যায় এবং সেখান থেকে IST গণনা হয়মহাসাগর"},{"q":"ভারতের প্রামাণ্য সময় (IST) GMT থেকে কতটা এগিয়ে?","o":["৪ ঘণ্টা ৩০ মিনিট","৫ ঘণ্টা ৩০ মিনিট","৬ ঘণ্টা","৫ ঘণ্টা"],"a":1,"e":"IST = GMT + ৫:৩০; কারণ ৮২°৩০′ E দ্রাঘিমায় সময় ৫ ঘণ্টা ৩০ মিনিট এগিয়ে থাকেমহাসাগর"},{"q":"সময়ের হিসাবে পৃথিবীর কত ডিগ্রি দ্রাঘিমা ১ ঘণ্টার সমান?","o":["১০°","১৫°","২০°","৩০°"],"a":1,"e":"পৃথিবী ২৪ ঘণ্টায় ৩৬০° ঘোরে, তাই ১ ঘণ্টা = ১৫° এবং ৪ মিনিট = ১° দ্রাঘিমামহাসাগর"},{"q":"আন্তর্জাতিক তারিখ রেখা কোন দ্রাঘিমায় অবস্থিত?","o":["০°","৯০° পূর্ব","১৮০°","৯০° পশ্চিম"],"a":2,"e":"আন্তর্জাতিক তারিখ রেখা মূলত ১৮০° দ্রাঘিমায় অবস্থিত, তবে মহাদেশ/দ্বীপ এড়াতে কয়েক জায়গায় বাঁকানোমহাসাগর"},{"q":"আন্তর্জাতিক তারিখ রেখা প্রধানত কোন মহাসাগরের উপর দিয়ে গেছে?","o":["ভারত মহাসাগর","প্রশান্ত মহাসাগর","আটলান্টিক মহাসাগর","আর্কটিক মহাসাগরাগর"],"a":1,"e":"১৮০° দ্রাঘিমা বিষুবরেখা ছাড়া প্রায় সম্পূর্ণ জলভাগ অর্থাৎ প্রশান্ত মহাসাগরের উপর দিয়ে যায়মহাসাগর"},{"q":"আন্তর্জাতিক তারিখ রেখা অতিক্রম করার সময় পশ্চিম থেকে পূর্বে গেলে —","o":["একদিন এগিয়ে যেতে হয়","একদিন পিছিয়ে যেতে হয়","কিছুই হয় না","সময় দ্বিগুণ হয়"],"a":1,"e":"পশ্চিম → পূর্ব দিকে অতিক্রম করলে একদিন কমাতে হয় (repeating a day); পূর্ব → পশ্চিমে গেলে একদিন বাড়াতে হয়মহাসাগর"},{"q":"নিচের কোনটি বিষুবরেখার উপর দিয়ে যায় না?","o":["আফ্রিকা","এশিয়া","দক্ষিণ আমেরিকা","ইউরোপ"],"a":3,"e":"বিষুবরেখা আফ্রিকা, এশিয়া ও দক্ষিণ আমেরিকা (ও ইন্দোনেশিয়া) অতিক্রম করে; ভারত ও ইউরোপ এর বাইরেমহাসাগর"},{"q":"নিচের কোন রেখা ভারতের উপর দিয়ে গেছে?","o":["বিষুবরেখা","কর্কটক্রান্তি","মকরক্রান্তি","কুমেরু বৃত্ত"],"a":1,"e":"ভারতের উপর দিয়ে কর্কটক্রান্তি রেখা (২৩°২৬′ N) গেছে; বিষুব ও মকরক্রান্তি ভারতকে স্পর্শ করে নামহাসাগর"},{"q":"অক্ষরেখা ও দ্রাঘিমারেখা পরস্পরকে কী কোণে ছেদ করে?","o":["০°","৩০°","৬০°","৯০°"],"a":3,"e":"অক্ষরেখা ও দ্রাঘিমারেখা পরস্পরকে সমকোণে (৯০°) ছেদ করে যেখানে মিলিত হয় — মেরুতে ছাড়ামহাসাগর"},{"q":"সব দ্রাঘিমারেখা কোন দুই বিন্দুতে মিলিত হয়?","o":["বিষুবরেখায়","উত্তর ও দক্ষিণ মেরুতে","প্রামাণ্য দ্রাঘিমায়","প্রশান্ত মহাসাগরে"],"a":1,"e":"সব দ্রাঘিমারেখা উত্তর মেরু ও দক্ষিণ মেরুতে এসে মিলিত হয়, তাই সেখানে সময়-অঞ্চল তৈরি হয় নামহাসাগর"},{"q":"ভারতে কটি প্রামাণ্য সময় অঞ্চল (time zone) আছে?","o":["১টি","২টি","৩টি","৪টি"],"a":0,"e":"ভারতে ভারতে এখন ১টি সময় অঞ্চল (IST) আছে; পূর্বাঞ্চলের জন্য দ্বিতীয় সময় অঞ্চলের দাবি আলোচিত হলেও সরকারিভাবে ১টিই আছেমহাসাগর"},{"q":"পৃথিবীর তাপমাত্রা বলয় (temperature zones) কতটি?","o":["২টি","৩টি","৪টি","৫টি"],"a":2,"e":"৪টি তাপমাত্রা বলয় — উষ্ণমণ্ডল (২৩.৫°N–২৩.৫°S), দুই নাতিশীতোষ্ণ মণ্ডল ও দুই হিমমণ্ডলমহাসাগর"},{"q":"নিচের কোনটি 'নিম্ন অক্ষাংশ' বা গ্রীষ্মপ্রধান অঞ্চল হিসেবে গণ্য হয়?","o":["৬০°–৯০°","০°–২৩.৫°","৩০°–৬০°","৪৫°–৯০°"],"a":1,"e":"বিষুবরেখার ২৩.৫° উত্তর ও দক্ষিণের ভিতরের অঞ্চল উষ্ণমণ্ডল; সূর্যমরা প্রতি বছর কোথাও না কোথাও লম্বভাবে পড়েমহাসাগর"},{"q":"অক্ষরেখা বরাবর পশ্চিম থেকে পূর্বে চললে —","o":["সময় পরিবর্তিত হয়","অক্ষাংশ পরিবর্তিত হয়","দ্রাঘিমা পরিবর্তিত হয়","কিছুই পরিবর্তিত হয় না"],"a":2,"e":"অক্ষরেখা বরাবর চললে অক্ষাংশ অপরিবর্তিত থাকে, তবে দ্রাঘিমা বদলায় — তাই স্থানীয় সময়ও বদলায়মহাসাগর"}]},{"id":"eng-vaa","title":"English — Verb, Adjective & Adverb","note":"Verbs (transitive, modal, auxiliary), adjectives vs adverbs and degrees of comparison. (Wednesday's English block.)","qs":[{"q":"'He sleeps early.' — এখানে 'sleeps' কোন ধরনের verb?","o":["Transitive","Intransitive","Auxiliary","Modal"],"a":1,"e":"যে verb-এর object থাকে না তা Intransitive — sleeps, runs, goes; object থাকলে Transitive — যেমন 'He kicked the ball'।"},{"q":"নিচের কোনটি Modal Auxiliary Verb?","o":["do","can","have","be"],"a":1,"e":"Modal auxiliary — can, could, may, might, will, would, shall, should, must, ought to; এরা মূল verb-এর সঙ্গে বসে।"},{"q":"'He ___ come yesterday.' — সঠিক বিকল্প কোনটি?","o":["does not","did not","is not","has not"],"a":1,"e":"'Yesterday' অতীত কাল বোঝায়, তাই past auxiliary 'did not' + মূল verb 'come' বসে।"},{"q":"'Beautiful' শব্দটি কোন ধরনের Adjective?","o":["Numeral","Descriptive (গুণবাচক)","Possessive","Demonstrative"],"a":1,"e":"গুণ বোঝায় Descriptive/Adjective of Quality; Numeral সংখ্যা বোঝায় (three), Possessive অধিকার (my)।"},{"q":"'I have three books.' — এখানে 'three' কোন ধরনের adjective?","o":["Adjective of quality","Adjective of number","Demonstrative adjective","Possessive adjective"],"a":1,"e":"সংখ্যা বোঝায় বলে Adjective of Number (Numeral Adjective); 'my' হলে Possessive, 'this' হলে Demonstrative।"},{"q":"'My father is a doctor.' — এখানে 'my' কোন ধরনের adjective?","o":["Demonstrative","Possessive","Interrogative","Numeral"],"a":1,"e":"অধিকার/মালিকানা বোঝায় Possessive Adjective — my, our, your, his, her, their।"},{"q":"'He ran quickly.' — 'quickly' এখানে কোন ধরনের adverb?","o":["Adverb of time","Adverb of manner","Adverb of place","Adverb of frequency"],"a":1,"e":"কার্য কীভাবে হল তা বোঝায় Adverb of Manner — quickly, slowly, loudly; adjective নয়।"},{"q":"'He hardly comes late; he is always on time.' — এখানে 'hardly' শব্দের অর্থ কী?","o":["কঠোরভাবে","প্রায় না","দ্রুত","সর্বদা"],"a":1,"e":"'Hardly' = প্রায় না (প্রায় কখনও নয়) — নেতিবাচক অর্থ; 'hard' হলে অর্থ হত কঠোরভাবে/কঠিন পরিশ্রমে।"},{"q":"'Always, often, never, seldom, sometimes' — এগুলি কোন ধরনের adverb?","o":["Manner","Frequency","Time","Degree"],"a":1,"e":"কতবার ঘটে তা বোঝায় Adverb of Frequency; এরা সাধারণত মূল verb-এর আগে বসে।"},{"q":"Adjective ও Adverb-এর সম্পর্কে সঠিক তথ্য কোনটি?","o":["Adjective verb-কে modify করে","Adverb adjective/verb-কে modify করতে পারে","Adverb noun-কে modify করে","দুটোই একই"],"a":1,"e":"Adjective মূলত noun/pronoun-কে modify করে; Adverb adverb, adjective ও verb-কে modify করতে পারে — 'very good song'।"},{"q":"'He runs ___ than me.' — সঠিক comparative form কোনটি?","o":["fast","faster","fastly","most fast"],"a":1,"e":"তুলনা বোঝাতে adverb-এর comparative — faster than; 'fastly' শব্দটি ইংরেজিতে নেই।"},{"q":"Adverb of Degree-এর উদাহরণ কোনটি?","o":["Slowly","Very","Yesterday","Outside"],"a":1,"e":"মাত্রা বোঝায় Adverb of Degree — very, much, quite, too, almost; Slowly = manner, Yesterday = time, Outside = place।"},{"q":"'Lately' শব্দের অর্থ কী?","o":["দেরিতে","সম্প্রতি","শেষে","দেরি করে"],"a":1,"e":"'Lately' = সম্প্রতি (recently); 'Late' = দেরিতে — দুটি ভিন্ন অর্থ, পরীক্ষায় ফাঁদ হিসেবে আসে।"}]}]},{"key":"thu","idx":3,"name":"Thursday","slot":"Science: Work, energy, power, heat and temperature — basic facts","subs":[{"id":"wep","title":"Science — Work, Energy, Power, Heat & Temperature","note":"Work, energy, power, heat vs temperature and the key conversions.","qs":[{"q":"বিজ্ঞানে 'কার্য' (work) করা হয় যখন —","o":["বল প্রয়োগ করা হয় মাত্র","বল প্রয়োগে বস্তুর সরণ ঘটে","বস্তু স্থির থাকে","বস্তু উষ্ণ হয়"],"a":1,"e":"কার্য = বল × বলের দিকে সরণ; বল প্রয়োগ করেও সরণ না হলে কার্য হয় নাবাষ্পীভবন"},{"q":"কার্য ও শক্তির SI একক কী?","o":["ওয়াট","জুল","নিউটন","ক্যালোরি"],"a":1,"e":"কার্য ও শক্তির একক জুল (J) = ১ নিউটন × ১ মিটার; ক্ষমতার একক ওয়াটবাষ্পীভবন"},{"q":"বল ও সরণের মধ্যে কোণ ৯০° হলে কৃত কার্য কত?","o":["সর্বাধিক","শূন্য","ঋণাত্মক","অসীম"],"a":1,"e":"W = F·s·cosθ; θ = ৯০° হলে cosθ = ০, তাই কার্য শূন্য — যেমন কাঁধে ব্যাগ নিয়ে সমতলে হাঁটাবাষ্পীভবন"},{"q":"নিচের কোনটি শক্তির রূপ নয়?","o":["যান্ত্রিক শক্তি","রাসায়নিক শক্তি","তাপশক্তি","ভরবেগ"],"a":3,"e":"ভরবেগ শক্তির রূপ নয়, এটি গতির পরিমাপ (mv); শক্তির রূপ — যান্ত্রিক, তাপ, রাসায়নিক, আলো, শব্দ, তড়িৎবাষ্পীভবন"},{"q":"গতিশক্তির (kinetic energy) সূত্র কোনটি?","o":["mgh","½mv²","mv","⅓mv²"],"a":1,"e":"গতিশক্তি KE = ½mv²; স্থিতিশক্তি PE = mgh (উচ্চতা বৃদ্ধিতে)বাষ্পীভবন"},{"q":"স্থিতিশক্তি (potential energy) নির্ভর করে —","o":["ভর ও উচ্চতার উপর","বেগের উপর","সময়ের উপর","উষ্ণতার উপর"],"a":0,"e":"PE = mgh; তাই ভর ও উচ্চতা বাড়লে স্থিতিশক্তি বাড়ে, বেগের সঙ্গে সম্পর্ক নেইবাষ্পীভবন"},{"q":"ক্ষমতা (power) -এর সংজ্ঞা কোনটি?","o":["মোট কৃত কার্য","কার্য করার হার","বলের মাত্রা","শক্তির পরিমাণ"],"a":1,"e":"ক্ষমতা = কৃতকার্য / সময়, একক ওয়াট (W) = জুল/সেকেন্ডবাষ্পীভবন"},{"q":"১ অশ্বশক্তি (horse power) = কত ওয়াট?","o":["৫৫০ W","৭৪৬ W","১০০০ W","১০০ W"],"a":1,"e":"১ H.P. ≈ ৭৪৬ ওয়াট ≈ ০.৭৪৬ কিলোওয়াট (বৈদ্যুতিক যন্ত্রে ৭৪৬ W ধরা হয়)বাষ্পীভবন"},{"q":"বিদ্যুৎ শক্তির বাণিজ্যিক একক কোনটি?","o":["জুল","ওয়াট","কিলোওয়াট-ঘণ্টা (kWh)","ক্যালোরি"],"a":2,"e":"১ ইউনিট বিদ্যুৎ = ১ kWh; বিদ্যুৎ বিল এই এককে করা হয়বাষ্পীভবন"},{"q":"১ কিলোওয়াট-ঘণ্টা (kWh) = কত জুল?","o":["৩.৬ × ১০³ J","৩.৬ × ১০⁵ J","৩.৬ × ১০⁶ J","৩.৬ × ১০⁷ J"],"a":2,"e":"১ kWh = ১০০০ W × ৩৬০০ সেকেন্ড = ৩.৬ × ১০⁶ জুলবাষ্পীভবন"},{"q":"তাপ (heat) কী?","o":["বস্তুর উষ্ণতার মাপ","তাপমাত্রার পার্থক্যের কারণে স্থানান্তরিত শক্তি","বস্তুর ভিতরের গতি","কেবল আগুনের তাপ"],"a":1,"e":"তাপ = এক বস্তু থেকে অন্য বস্তুতে স্থানান্তরিত শক্তি; তাপমাত্রা তাপের মাত্রার সূচকবাষ্পীভবন"},{"q":"তাপমাত্রা কী?","o":["বস্তুতে থাকা মোট তাপ","বস্তুর উষ্ণতা বা শীতলতার মাত্রা","তাপশক্তির একক","তাপ সঞ্চালনের হার"],"a":1,"e":"তাপমাত্রা উষ্ণতার মাত্রা, একক °C বা K; তাপের একক জুল/ক্যালোরিবাষ্পীভবন"},{"q":"তাপ গ্রাহকতার মাপক যন্ত্র —","o":["থার্মোমিটার","ক্যালরিমিটার","ব্যারোমিটার","হাইড্রোমিটার"],"a":1,"e":"ক্যালরিমিটার দিয়ে তাপের পরিমাণ (calorie) মাপা হয়; থার্মোমিটার দিয়ে তাপমাত্রাবাষ্পীভবন"},{"q":"ডাক্তারি থার্মোমিটারের সাধারণ পাঠসীমা কত?","o":["০°C–১০০°C","৩৫°C–৪২°C","−১০°C–১১০°C","২০°C–৫০°C"],"a":1,"e":"মানবদেহের তাপমাত্রা ৩৫–৪২°C সীমায় থাকে, তাই ডাক্তারি থার্মোমিটারের সীমা কেবল এই অংশেবাষ্পীভবন"},{"q":"ডাক্তারি থার্মোমিটারে পারদনলের কাছে বাঁক (kink) থাকে কেন?","o":["সহজে ভাঙার জন্য","পারদ যাতে নিজে থেকে ফিরে না যায়","রঙ দেখার জন্য","তাপ বাড়ানোর জন্য"],"a":1,"e":"বাঁক থাকার জন্য পারদ নিজে থেকে সংকুচিত হয় না; তাই নাড়া দিয়ে ঝাঁকাতে হয়বাষ্পীভবন"},{"q":"পরম শূন্য তাপমাত্রা কত?","o":["০°C","−২৭৩.১৫°C","−১০০°C","−১৯.৫°C"],"a":1,"e":"পরম শূন্য = −২৭৩.১৫°C = 0 K; এই তাপমাত্রায় অণুর গতি তাত্ত্বিকভাবে শূন্যবাষ্পীভবন"},{"q":"তাপ সঞ্চালনের তিনটি পদ্ধতি কী কী?","o":["পরিবহন, পরিচলন, বিকিরণ","গলন, বাষ্পীভবন, ঘনীভবন","শুষ্ক, আর্দ্র, জলীয়","ছড়ানো, মিশ্রণ, দহন"],"a":0,"e":"কঠিনে পরিবহন (conduction), তরল-গ্যাসে পরিচলন (convection), শূন্যস্থানেও বিকিরণ (radiation)বাষ্পীভবন"},{"q":"সূর্য থেকে পৃথিবীতে তাপ আসে কোন পদ্ধতিতে?","o":["পরিবহন","পরিচলন","বিকিরণ","সংযোজন"],"a":2,"e":"মহাকাশ শূন্য, তাই সূর্য ও পৃথিবীর মধ্যে তাপ বিকিরণ (তড়িৎচুম্বকীয় তরঙ্গ) পদ্ধতিতে আসেবাষ্পীভবন"},{"q":"লোহার রডের এক মুখ গরম করলে অন্য মুখ গরম হয় — এ কোন পদ্ধতি?","o":["বিকিরণ","পরিচলন","পরিবহন","ঘনীভবন"],"a":2,"e":"কঠিন পদার্থে তাপ পরিবহন (conduction) পদ্ধতিতে অণু-পরমাণুর কাঁপুনির মাধ্যমে ছড়ায়বাষ্পীভবন"},{"q":"নিচের কোনটি তাপের সর্বোত্তম পরিবাহী?","o":["তামা","রূপা","অ্যালুমিনিয়াম","লোহা"],"a":1,"e":"রূপা (Ag) তাপ ও বিদ্যুৎ উভয়েরই সর্বোত্তম পরিবাহী; এর পরে তামাবাষ্পীভবন"},{"q":"নিচের কোনটি তাপের কুপরিবাহী (অপরিবাহী)?","o":["লোহা","তামা","কাঠ ও বায়ু","অ্যালুমিনিয়াম"],"a":2,"e":"কাঠ, উল, প্লাস্টিক, বায়ু — কুপরিবাহী; বায়ু ভালো অপরিবাহী, তাই উলের পোশাক গরম রাখেবাষ্পীভবন"},{"q":"থার্মস ফ্লাস্ক তাপ ধরে রাখে কারণ —","o":["দেওয়াল মোটা","দুই দেওয়ালের মাঝে ভ্যাকুয়াম","এতে পারদ থাকে","রূপালি রঙের জন্য"],"a":1,"e":"ডাবল-ওয়াল ভ্যাকুয়াম পরিবহন-পরিচলন বন্ধ করে এবং চকচকে আস্তরণ বিকিরণ প্রতিহত করেবাষ্পীভবন"},{"q":"উলের পোশাক শীতে গরম রাখে কারণ —","o":["উল তাপ উৎপন্ন করে","উল ও বায়ু তাপ কুপরিবাহ, তাই শরীরের তাপ আটকে থাকে","উল তাপ শোষণ করে","উল ঘর্ষণ তৈরি করে"],"a":1,"e":"উলের আঁশের ফাঁকে ফাঁকে বায়ু আটকে থাকে, যা কুপরিবাহী — ফলে শরীরের তাপ বাইরে যায় নাবাষ্পীভবন"},{"q":"জলের আপেক্ষিক তাপ (specific heat) প্রায় কত?","o":["০.৫ ক্যালোরি/গ্রাম°C","১ ক্যালোরি/গ্রাম°C","৫ ক্যালোরি/গ্রাম°C","১০ ক্যালোরি/গ্রাম°C"],"a":1,"e":"জলের আপেক্ষিক তাপ ১ cal/g°C — সাধারণ পদার্থের মধ্যে সর্বোচ্চ; তাই জল দেরিতে গরম-ঠান্ডা হয়বাষ্পীভবন"},{"q":"১ গ্রাম বরফ গলতে কত লীনতাপ লাগে?","o":["৮০ ক্যালোরি","৫৩৬ ক্যালোরি","৯০ ক্যালোরি","১ ক্যালোরি"],"a":0,"e":"বরফগলনের লীনতাপ = ৮০ cal/g; জল থেকে বাষ্প হওয়ার লীনতাপ = ৫৩৬ cal/g (ববাষ্পীভবনন)বাষ্পীভবন"},{"q":"বাষ্পে পোড়া জ্বালায় জলনিরপেক্ষ জলের চেয়ে বেশি ক্ষতি করে কেন?","o":["বাষ্প গরম বেশি","বাষ্প ঘনীভূত হয়ে ৫৩৬ cal/g লীনতাপ ছাড়ে","বাষ্প ভারী","বাষ্প দ্রুত ছড়ায়"],"a":1,"e":"বাষ্প চামড়ায় পড়লে ঘনীভবনে লীনতাপসহ (৫৩৬ cal/g) তাপ ছাড়ে — তাই একই তাপমাত্রায় বেশি পোড়ায়বাষ্পীভবন"},{"q":"তাপ বাড়লে ধাতব তার লম্বা হয় — এই ঘটনাকে বলা হয় —","o":["তাপীয় প্রসারণ","তাপীয় পরিবহন","আপেক্ষিক তাপ","লীনতাপ"],"a":0,"e":"উষ্ণতায় অনুগুলির গতি বেড়ে দূরত্ব বাড়ে ⇒ তাপীয় প্রসারণ; তাই রেললাইনে ফাঁক রাখা হয়বাষ্পীভবন"},{"q":"এর মধ্যে কোনটি রাসায়নিক শক্তির উৎস নয়?","o":["খাদ্য","কয়লা","পেট্রোল","চুম্বকীয় ক্ষেত্র"],"a":3,"e":"খাদ্য, কয়লা, পেট্রোল, ব্যাটারি — রাসায়নিক শক্তির উৎস; চুম্বক শক্তি অন্য রূপবাষ্পীভবন"},{"q":"শক্তি সংরক্ষণের সূত্র অনুসারে —","o":["শক্তি সৃষ্টি করা যায়","শক্তি ধ্বংস করা যায়","শক্তি এক রূপ থেকে অন্য রূপে রূপান্তরিত হয় মাত্র","শক্তি কমে যায়"],"a":2,"e":"শক্তি সৃষ্টি বা ধ্বংস হয় না, কেবল রূপ বদলায় — মোট শক্তি সিস্টেমে ধ্রুবক থাকেবাষ্পীভবন"},{"q":"কার্য = ০ হয় কিন্তু শক্তি ব্যয় হয় — এর উদাহরণ কোনটি?","o":["পাহাড়ে ওঠা","কাঁধে বোঝা নিয়ে সমতলে হাঁটা","বস্তুকে উপরে তোলা","বল ঠেলা"],"a":1,"e":"উল্লম্ব দিকে বল, অনুভূমিক দিকে সরণ — cos৯০° = ০, তাই কার্য শূন্য; তবে পেশিতে শক্তি ব্যয় হয়বাষ্পীভবন"}]}]},{"key":"fri","idx":4,"name":"Friday","slot":"West Bengal GK: Districts, rivers and neighbouring states | English: Articles and Prepositions","subs":[{"id":"wbgk","title":"West Bengal GK — Districts, Rivers & Neighbouring States","note":"WB districts, rivers, neighbouring states and the current district-count update.","qs":[{"q":"পশ্চিমবঙ্গের প্রতিবেশী রাজ্যের সংখ্যা কত?","o":["৩টি","৪টি","৫টি","৬টি"],"a":2,"e":"৫টি রাজ্য — ওড়িশা, ঝাড়খণ্ড, বিহার, সিকিম ও অসম (কলকাতা কেন্দ্রশাসিত অঞ্চল নয়, তাই পশ্চিমবঙ্গের প্রতিবেশী রাজ্য ৫টি)।"},{"q":"পশ্চিমবঙ্গের সঙ্গে সীমান্ত আছে এমন প্রতিবেশী দেশ কতগুলি?","o":["২টি","৩টি","৪টি","১টি"],"a":1,"e":"৩টি দেশ — বাংলাদেশ, নেপাল ও ভুটান (পশ্চিমবঙ্গের আন্তর্জাতিক সীমা এই তিন দেশের সঙ্গে)।"},{"q":"পশ্চিমবঙ্গের মোট আয়তন কত?","o":["৭৪,৮৭৭ বর্গকিমি","৮৮,৭৫২ বর্গকিমি","৯৪,১৬৩ বর্গকিমি","১,০২,২০০ বর্গকিমি"],"a":1,"e":"পশ্চিমবঙ্গের আয়তন ৮৮,৭৫২ বর্গকিমি — আয়তনে ভারতের ১৩তম বৃহৎ রাজ্য।"},{"q":"আয়তনে পশ্চিমবঙ্গের বৃহত্তম জেলা কোনটি?","o":["দক্ষিণ ২৪ পরগনা","পশ্চিম মেদিনীপুর","উত্তর ২৪ পরগনা","পুরুলিয়া"],"a":0,"e":"দক্ষিণ ২৪ পরগনা আয়তনে (~৯,৯৬০ বর্গকিমি) পশ্চিমবঙ্গের বৃহত্তম জেলা; ক্ষুদ্রতম হল কলকাতা।"},{"q":"জনসংখ্যায় পশ্চিমবঙ্গের বৃহত্তম জেলা কোনটি?","o":["দক্ষিণ ২৪ পরগনা","উত্তর ২৪ পরগনা","কলকাতা","বর্ধমান"],"a":1,"e":"২০১১ জনগণনা অনুসারে উত্তর ২৪ পরগনা (প্রায় ১ কোটি) জনসংখ্যায় সর্বাধিক; দ্বিতীয় দক্ষিণ ২৪ পরগনা।"},{"q":"পশ্চিমবঙ্গের ক্ষুদ্রতম জেলা কোনটি?","o":["হাওড়া","কলকাতা","নদীয়া","আলিপুরদুয়ার"],"a":1,"e":"কলকাতা আয়তনে ক্ষুদ্রতম জেলা (~২০৫ বর্গকিমি) কিন্তু জনঘনত্ব সর্বাধিক।"},{"q":"২০১৭ সালের পুনর্গঠনের পরে পশ্চিমবঙ্গে জেলার সংখ্যা কত হয়েছিল?","o":["২১টি","২২টি","২৩টি","৩০টি"],"a":2,"e":"২০১৭ সালে বর্ধমান ভেঙে পূর্ব ও পশ্চিম বর্ধমান তৈরি হলে জেলার সংখ্যা ২৩ হয় (২০২৬ সালের বাজেট-প্রস্তাবের আগে পর্যন্ত)।"},{"q":"২০২৬ সালের জুন মাসে পশ্চিমবঙ্গের বাজেটে নতুন যে জেলাগুলির প্রস্তাব হয়, সেগুলি কী কী?","o":["বসিরহাট, সুন্দরবন, জঙ্গিপুর ও আরামবাগ","রাণাঘাট, বিষ্ণুপুর, বহরমপুর ও কান্দি","বসিরহাট, ইছামতী, রাণাঘাট ও বিষ্ণুপুর","জঙ্গিপুর, বনগাঁ, কৃষ্ণনগর ও তমলুক"],"a":0,"e":"২০২৬-২৭ বাজেটে চারটি নতুন জেলা — বসিরহাট, সুন্দরবন, জঙ্গিপুর, আরামবাগ এবং কলকাতার পুনর্গঠনের প্রস্তাব হয়।"},{"q":"সুন্দরবন জেলা কোন জেলাকে ভেঙে গঠনের প্রস্তাব করা হয়েছে?","o":["উত্তর ২৪ পরগনা","দক্ষিণ ২৪ পরগনা","মুর্শিদাবাদ","হুগলি"],"a":1,"e":"সুন্দরবন জেলা দক্ষিণ ২৪ পরগনার ক্যানিং ও কাকদ্বীপ মহকুমা নিয়ে গঠনের প্রস্তাব; বসিরহাট — উত্তর ২৪ পরগনা থেকে।"},{"q":"পশ্চিমবঙ্গে প্রশাসনিক বিভাগ (division) কতটি?","o":["৪টি","৫টি","৬টি","৭টি"],"a":1,"e":"৫টি বিভাগ — প্রেসিডেন্সি, বর্ধমান, মেদিনীপুর, মালদা ও জলপাইগুড়ি।"},{"q":"মালদা বিভাগে কতটি জেলা রয়েছে?","o":["৩টি","৪টি","৫টি","৬টি"],"a":1,"e":"মালদা বিভাগের ৪টি জেলা — মালদা, উত্তর দিনাজপুর, দক্ষিণ দিনাজপুর ও মুর্শিদাবাদ।"},{"q":"প্রেসিডেন্সি বিভাগে নিচের কোন জেলা পড়ে না?","o":["হাওড়া","নদীয়া","হুগলি","কলকাতা"],"a":2,"e":"প্রেসিডেন্সি বিভাগ — কলকাতা, হাওড়া, নদীয়া, উত্তর ২৪ পরগনা, দক্ষিণ ২৪ পরগনা; হুগলি বর্ধমান বিভাগে।"},{"q":"পশ্চিমবঙ্গের দীর্ঘতম নদী কোনটি?","o":["দামোদর","গঙ্গা","তিস্তা","ময়ূরাক্ষী"],"a":1,"e":"গঙ্গা (রাজ্যে প্রায় ৫২০ কিমি) পশ্চিমবঙ্গের দীর্ঘতম নদী; পরে ভাগীরথী-হুগলি নামে প্রবাহিত।"},{"q":"পশ্চিমবঙ্গের 'দুঃখের নদী' (sorrow of Bengal) কাকে বলা হয়?","o":["দামোদর","অজয়","কংসাবতী","ময়ূরাক্ষী"],"a":0,"e":"বর্ষায় ঘন ঘন বন্যা ও পলি-ধ্বংসের জন্য দামোদরকে 'বাংলার দুঃখ' বলা হয়; বাঁধ দেওয়ার পরে অবস্থার উন্নতি হয়েছে।"},{"q":"ফরাক্কা বাঁধ কোন নদীর উপর অবস্থিত?","o":["দামোদর","গঙ্গা","তিস্তা","মহানন্দা"],"a":1,"e":"ফরাক্কা বাঁধ মুর্শিদাবাদ জেলায় গঙ্গা নদীর উপর ১৯৭৫ সালে তৈরি — কলকাতা বন্দরের পলি সমস্যা সমাধানে।"},{"q":"দামোদর কোন নদীর উপনদী?","o":["গঙ্গা","হুগলি (ভাগীরথী)","ব্রহ্মপুত্র","মহানন্দা"],"a":1,"e":"দামোদর হুগলি বা ভাগীরথী নদীর উপনদী (সামান্য অর্থে গঙ্গা-সিস্টেমের অংশ); উৎস ছোটনাগপুর মালভূমি।"},{"q":"অজয় নদী কোন নদীর উপনদী?","o":["হুগলি (ভাগীরথী)","গঙ্গা","তিস্তা","দামোদর"],"a":0,"e":"অজয় নদী (বর্ধমান-বীরভূম) ভাগীরথী বা হুগলিতে মেশে; ময়ূরাক্ষীও একই সিস্টেমের।"},{"q":"রূপনারায়ণ নদী কোন দুই নদীর মিলনে সৃষ্ট?","o":["দামোদর ও অজয়","দ্বারকেশ্বর ও শিলাবতী","ময়ূরাক্ষী ও ব্রাহ্মণী","হলদি ও কংসাবতী"],"a":1,"e":"দ্বারকেশ্বর ও শিলাবতী মিলে রূপনারায়ণ নদী; এটি পশ্চিম মেদিনীপুর ও পূর্ব মেদিনীপুর হয়ে হুগলিতে মেশে।"},{"q":"ময়ূরাক্ষী নদীর উৎস কোথায়?","o":["হিমালয়","ছোটনাগপুর মালভূমি (ঝাড়খণ্ড)","সুন্দরবন","দার্জিলিং পাহাড়"],"a":1,"e":"ময়ূরাক্ষী ঝাড়খণ্ডের ত্রিকুট পাহাড় থেকে উৎপন্ন হয়ে বীরভূম-মুর্শিদাবাদ হয়ে ভাগীরথীতে মেশে।"},{"q":"তিস্তা নদী বাংলাদেশে গিয়ে কোন নদীর সঙ্গে মেশে?","o":["গঙ্গা (পদ্মা)","ব্রহ্মপুত্র (যমুনা)","মেঘনা","কর্ণফুলী"],"a":1,"e":"তিস্তা সিকিম থেকে উৎপন্ন হয়ে জলপাইগুড়ি-কোচবিহার পার হয়ে বাংলাদেশে ব্রহ্মপুত্র (যমুনা) নদীতে মেশে।"},{"q":"নিচের কোন নদীটি হিমালয় থেকে উৎপন্ন নয়?","o":["তিস্তা","তোরসা","দামোদর","জলঢাকা"],"a":2,"e":"দামোদর ছোটনাগপুর মালভূমি (ছোটনাগপুর) থেকে উৎপন্ন; তিস্তা-তোরসা-জলঢাকা হিমালয়জাত নদী।"},{"q":"ভারত-বাংলাদেশের সীমানা নির্ধারিত হয় যে রেখা দ্বারা —","o":["ম্যাকমোহন রেখা","র‍্যাডক্লিফ রেখা","ডুরান্ড রেখা","লাইন অফ কন্ট্রোল"],"a":1,"e":"১৯৪৭ সালে স্যার সিরিল র‍্যাডক্লিফের নেতৃত্বে ভারত-পাকিস্তান (তথা পূর্ববঙ্গ/বাংলাদেশ) সীমানা নির্ধারিত হয়।"},{"q":"ইছামতী নদী প্রধানত কোন দুই অঞ্চলের সীমান্ত বরাবর প্রবাহিত?","o":["ভারত ও নেপাল","ভারত (পশ্চিমবঙ্গ) ও বাংলাদেশ","ভারত ও ভুটান","বিহার ও ঝাড়খণ্ড"],"a":1,"e":"ইছামতী একটি সীমান্ত-নদী — নদীয়া ও উত্তর ২৪ পরগনার সীমান্ত দিয়ে বাংলাদেশে প্রবেশ করে।"},{"q":"পশ্চিমবঙ্গের সর্বোচ্চ শৃঙ্গ কোনটি?","o":["সান্দাকফু","টাইগার হিল","নেটহর্ট","সিঞ্চল"],"a":0,"e":"দার্জিলিং জেলার সান্দাকফু (৩,৬৩৬ মিটার) পশ্চিমবঙ্গের সর্বোচ্চ বিন্দু; সিঞ্চল (৩,৬৫৭ মি) সিকিমে।"},{"q":"সুন্দরবন ম্যানগ্রোভ অরণ্য কোন দুই দেশে বিস্তৃত?","o":["ভারত ও মায়ানমার","ভারত ও বাংলাদেশ","ভারত ও শ্রীলঙ্কা","বাংলাদেশ ও মায়ানমার"],"a":1,"e":"গঙ্গা-ব্রহ্মপুত্র-মেঘনার ব-দ্বীপে গড়া সুন্দরবন ভারত (পশ্চিমবঙ্গ) ও বাংলাদেশে বিস্তৃত — বিশ্বের বৃহত্তম ম্যানগ্রোভ।"},{"q":"দুয়ার্স অঞ্চল কোন নদীর পূর্বদিকে অবস্থিত?","o":["তিস্তা","দামোদর","গঙ্গা","মহানন্দা"],"a":0,"e":"তিস্তা নদীর পূর্ব দিকে জলপাইগুড়ি-আলিপুরদুয়ারের বনভূমিকে 'ডুয়ার্স' (দুয়ার) বলা হয় — চা-বাগানের জন্য বিখ্যাত।"},{"q":"পশ্চিমবঙ্গে সবচেয়ে বেশি চা উৎপাদিত হয় কোন অঞ্চলে?","o":["রাঢ় অঞ্চল","ডুয়ার্স ও দার্জিলিং","সুন্দরবন","পশ্চিমাঞ্চল"],"a":1,"e":"উত্তরবঙ্গের জলপাইগুড়ি-আলিপুরদুয়ারের ডুয়ার্স ও দার্জিলিং পাহাড় — রাজ্যের প্রধান চা-উৎপাদন কেন্দ্র।"},{"q":"নিচের কোন রাজ্যের সঙ্গে পশ্চিমবঙ্গের কোনো সীমানা নেই?","o":["ঝাড়খণ্ড","বিহার","ছত্তিশগড়","সিকিম"],"a":2,"e":"পশ্চিমবঙ্গের সীমানা — ওড়িশা, ঝাড়খণ্ড, বিহার, সিকিম ও অসম; ছত্তিশগড়ের সঙ্গে সীমানা নেই।"},{"q":"কলকাতা ও হুগলি নদীর পশ্চিম তীরে অবস্থিত জেলা কোনটি?","o":["উত্তর ২৪ পরগনা","নদীয়া","হাওড়া","মালদা"],"a":2,"e":"হাওড়া জেলা হুগলি নদীর পশ্চিম তীরে; উত্তর ২৪ পরগনা ও নদীয়া পূর্ব তীরে (কলকাতাও পূর্ব তীরে)।"},{"q":"গঙ্গাসাগর মেলা কোথায় অনুষ্ঠিত হয়?","o":["দীঘা","সাগরদ্বীপ (দক্ষিণ ২৪ পরগনা)","বকখালি","ফ্রেজারগঞ্জ"],"a":1,"e":"দক্ষিণ ২৪ পরগনার সাগরদ্বীপের দক্ষিণে গঙ্গা-সাগর-সংগমে মকরসংক্রান্তিতে গঙ্গাসাগর মেলা বসে।"}]},{"id":"eng-ap","title":"English — Articles & Prepositions","note":"Articles (a/an/the) and preposition collocations.","qs":[{"q":"ইংরেজি ব্যাকরণে Article কত প্রকার?","o":["এক প্রকার","দুই প্রকার","তিন প্রকার","চার প্রকার"],"a":1,"e":"দুই প্রকার — Indefinite Article (a, an) ও Definite Article (the)।"},{"q":"'a' ও 'an' -কে কী বলা হয়?","o":["Definite Article","Indefinite Article","Preposition","Conjunction"],"a":1,"e":"অনির্দিষ্ট ব্যক্তি/বস্তু বোঝায় বলে a/an হল Indefinite Article; নির্দিষ্ট হলে 'the' (Definite)।"},{"q":"'a' কোন ক্ষেত্রে বসে?","o":["স্বরধ্বনির আগে","ব্যঞ্জনধ্বনির আগে","সব শব্দের আগে","কখনোই বসে না"],"a":1,"e":"'a' ব্যঞ্জনধ্বনি (consonant sound)-এর আগে বসে — a book, a car, a European (ইউ ধ্বনি)।"},{"q":"'___ honest man is respected by all.' — শূন্যস্থানে কী বসবে?","o":["a","an","the","কিছুই বসবে না"],"a":1,"e":"'Honest'-এ 'h' নীরব, উচ্চারণ শুরু হয় স্বরধ্বনিতে — তাই 'an honest man'।"},{"q":"'He is ___ European.' — সঠিক article কোনটি?","o":["a","an","the","কোনো article নয়"],"a":0,"e":"'European' উচ্চারিত হয় 'ইউরোপিয়ান' — 'ইউ' ব্যঞ্জনধ্বনি, তাই 'a European'।"},{"q":"'I waited for ___ hour.' — সঠিক article কোনটি?","o":["a","an","the","কোনো article নয়"],"a":1,"e":"'Hour'-এ 'h' নীরব, উচ্চারণ 'আওয়ার' — স্বরধ্বনিতে শুরু, তাই 'an hour'।"},{"q":"'She is ___ M.A. in English.' — সঠিক article কোনটি?","o":["a","an","the","কোনো article নয়"],"a":1,"e":"'M' অক্ষরটির উচ্চারণ 'এম' — স্বরধ্বনি দিয়ে শুরু, তাই 'an M.A.' (একইভাবে an S.D.O.)।"},{"q":"'___ Ganga is a holy river.' — শূন্যস্থানে কী বসবে?","o":["A","An","The","কোনো article নয়"],"a":2,"e":"নদী, সমুদ্র, পর্বতমালা, গ্ৰন্থের নামের আগে Definite Article 'the' বসে — the Ganga।"},{"q":"'___ Himalayas are in the north of India.' — সঠিক article কোনটি?","o":["A","An","The","কোনো article নয়"],"a":2,"e":"পর্বতমালার নামের আগে 'the' বসে; তবে একক শৃঙ্গে বসে না — Mount Everest।"},{"q":"'___ Mount Everest is the highest peak.' — সঠিক article কোনটি?","o":["The","A","An","কোনো article বসবে না"],"a":3,"e":"একক পর্বতশৃঙ্গ (Everest, Fuji) বা হ্রদের নামের আগে article বসে না; পর্বতমালায় 'the' বসে।"},{"q":"'___ sun rises in the east.' — সঠিক article কোনটি?","o":["A","An","The","কোনো article নয়"],"a":2,"e":"আকাশের অদ্বিতীয় বস্তু (sun, moon, earth, sky)-এর আগে 'the' বসে।"},{"q":"'He is ___ best student in the class.' — সঠিক article কোনটি?","o":["a","an","the","কোনো article নয়"],"a":2,"e":"Superlative degree-এর আগে 'the' বসে — the best, the highest; একইভাবে comparative-এর ক্ষেত্রেও (the better of the two)।"},{"q":"'Gold is ___ precious metal.' — সঠিক article কোনটি?","o":["a","an","the","কোনো article নয়"],"a":0,"e":"Material noun-এর আগে article বসে না, কিন্তু তারপর countable singular noun এলে 'a' বসে — a precious metal।"},{"q":"'She can play ___ violin very well.' — সঠিক article কোনটি?","o":["a","an","the","কোনো article নয়"],"a":2,"e":"বাদ্যযন্ত্রের নামের আগে 'the' বসে — the violin, the piano, the sitar।"},{"q":"'He goes to ___ school every day.' (ছাত্র হিসেবে) — সঠিক article কোনটি?","o":["a","an","the","কোনো article বসবে না"],"a":3,"e":"school, college, bed, church, prison — উদ্দেশ্য অনুযায়ী (পড়াশোনা/ঘুম) ব্যবহার হলে article বসে না।"},{"q":"'___ rich should help the poor.' — সঠিক article কোনটি?","o":["A","An","The","কোনো article নয়"],"a":2,"e":"Adjective-কে noun করে গোটা শ্রেণি বোঝালে 'the' বসে — the rich, the poor, the brave।"},{"q":"'The book is ___ the table.' — সঠিক preposition কোনটি?","o":["in","on","at","under"],"a":1,"e":"পৃষ্ঠের উপরে স্পর্শ করে থাকলে 'on' (on the table); ভিতরে থাকলে 'in'।"},{"q":"'He will come ___ Monday.' — সঠিক preposition কোনটি?","o":["in","at","on","for"],"a":2,"e":"সপ্তাহের বার ও তারিখের আগে 'on' বসে — on Monday, on 5th June; মাস/বছরে 'in', ঘড়ির সময়ে 'at'।"},{"q":"'The class starts ___ 8 o'clock.' — সঠিক preposition কোনটি?","o":["in","on","at","since"],"a":2,"e":"নির্দিষ্ট ঘড়ির সময়ের আগে 'at' বসে — at 8 o'clock, at noon, at midnight।"},{"q":"'He was born ___ July.' — সঠিক preposition কোনটি?","o":["on","at","in","from"],"a":2,"e":"মাস, ঋতু ও বছরের আগে 'in' বসে — in July, in winter, in 2026।"},{"q":"'She is good ___ mathematics.' — সঠিক preposition কোনটি?","o":["in","at","with","for"],"a":1,"e":"'Good at' fixed combination — দক্ষতা বোঝায়: good at English/maths; 'good for' = উপকারী।"},{"q":"'The child is afraid ___ darkness.' — সঠিক preposition কোনটি?","o":["from","of","with","for"],"a":1,"e":"'Afraid of' fixed combination — ভয় বোঝায়; একইভাবে fearful of, scared of।"},{"q":"'He insisted ___ going alone.' — সঠিক preposition কোনটি?","o":["for","to","on","at"],"a":2,"e":"'Insist on' fixed combination — জোর দেওয়া অর্থে সর্বদা 'on' বসে (insist on/upon)।"},{"q":"'The train is ___ time today.' — সঠিক preposition কোনটি?","o":["in","at","on","for"],"a":2,"e":"'On time' = নির্দিষ্ট সময়ে; 'in time' = সময়ের আগে/ঠিক সময়ের মধ্যে।"},{"q":"'I have known him ___ ten years.' — সঠিক preposition কোনটি?","o":["since","for","from","during"],"a":1,"e":"'For' + সময়কাল (for ten years); 'since' + নির্দিষ্ট সময়-বিন্দু (since 2015)।"},{"q":"'He died ___ cholera.' — সঠিক preposition কোনটি?","o":["from","of","by","with"],"a":1,"e":"রোগে মৃত্যু হলে 'die of' (die of cholera); দুর্ঘটনা/কারণে হলে 'die from'।"},{"q":"'He is angry ___ me for my mistake.' — সঠিক preposition কোনটি?","o":["on","at","with","from"],"a":2,"e":"ব্যক্তি-বিষয়ে রাগ হলে 'angry with' (person); বিষয়/আচরণে রাগ হলে 'angry at' (angry at his conduct)।"},{"q":"'He was accused ___ theft.' — সঠিক preposition কোনটি?","o":["for","of","with","about"],"a":1,"e":"'Accused of' fixed combination — অভিযুক্ত অর্থে সর্বদা 'of' বসে (blamed for, but accused of)।"},{"q":"'Hard work is the key ___ success.' — সঠিক preposition কোনটি?","o":["of","for","to","in"],"a":2,"e":"'Key to' বাঁধা ব্যবহার — the key to success; একইভাবে solution to, answer to, preface to।"},{"q":"'He is superior ___ me in intelligence.' — সঠিক preposition কোনটি?","o":["than","to","from","of"],"a":1,"e":"Latin comparative শব্দ — superior, inferior, senior, junior, prior — এদের পরে 'to' বসে, 'than' নয়।"}]}]}];
+const DUR_SEC_PER_Q = 50;          /* 30 questions = 25 minutes */
+</script>
+<script>
+/* ============================================================
+   TARGET X — Week 1 Mock Test  (English UI, Bengali questions)
+   Single-file app. No settings screen — configure at the top of
+   this file: SHEET_URL, WEEK_START, UNLOCK_ALL.
+   ============================================================ */
+
+/* ---------- tiny utils ---------- */
+const $ = id => document.getElementById(id);
+const pad2 = n => (n < 10 ? '0' : '') + n;
+const EN_DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const EN_DAYS_SHORT = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const EN_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const BATCH_NAME = 'TARGET X';
+
+/* ---------- storage (works even when localStorage is blocked) ---------- */
+const store = (() => {
+  try { const k = '__tx_test__'; localStorage.setItem(k, '1'); localStorage.removeItem(k); return localStorage; }
+  catch (e) { const m = {}; return { getItem: k => (k in m ? m[k] : null), setItem: (k, v) => { m[k] = String(v); }, removeItem: k => { delete m[k]; } }; }
+})();
+const sget = (k, dft) => { try { const v = store.getItem(k); return v === null ? dft : JSON.parse(v); } catch (e) { return dft; } };
+const sset = (k, v) => { try { store.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+/* ---------- config helpers ---------- */
+function mondayOf(d) { const x = new Date(d); const wd = (x.getDay() + 6) % 7; x.setDate(x.getDate() - wd); x.setHours(0,0,0,0); return x; }
+const DEFAULT_WEEK = (() => { const m = mondayOf(new Date()); return m.getFullYear() + '-' + pad2(m.getMonth()+1) + '-' + pad2(m.getDate()); })();
+function cfg() {
+  let ws = DEFAULT_WEEK;
+  if (CONFIG.WEEK_START && !isNaN(new Date(CONFIG.WEEK_START + 'T00:00:00'))) ws = CONFIG.WEEK_START;
+  return {
+    endpoint: (CONFIG.SHEET_URL || '').trim(),
+    sheetId: (CONFIG.SHEET_ID || '').trim(),
+    sheetTab: ((CONFIG.SHEET_TAB || 'Results') + '').trim() || 'Results',
+    weekStart: ws, admin: !!CONFIG.UNLOCK_ALL
+  };
+}
+function student() { return sget('tx_student', null); }
+function saveStudent(s) { sset('tx_student', s); }
+function allResults() { return sget('tx_results', []); }
+function saveResults(a) { sset('tx_results', a); }
+
+/* ---------- unlock logic (each day opens at 9:00 PM that day) ---------- */
+function weekStartDate() { const d = new Date(cfg().weekStart + 'T00:00:00'); return isNaN(d) ? mondayOf(new Date()) : d; }
+function dayDate(i) { const d = weekStartDate(); const x = new Date(d); x.setDate(x.getDate() + i); return x; }
+function unlockTime(i) { const d = dayDate(i); d.setHours(21, 0, 0, 0); return d; }
+function isUnlocked(i) { return cfg().admin || Date.now() >= unlockTime(i).getTime(); }
+function countdownText(ms) {
+  if (ms <= 0) return 'Open now';
+  const s = Math.floor(ms / 1000), d = Math.floor(s / 86400), h = Math.floor((s % 86400) / 3600), m = Math.floor((s % 3600) / 60);
+  if (d > 0) return 'Opens in ' + d + 'd ' + h + 'h';
+  if (h > 0) return 'Opens in ' + h + 'h ' + m + 'm';
+  return 'Opens in ' + m + 'm ' + (s % 60) + 's';
+}
+function fmtDate(d) { return EN_DAYS_SHORT[d.getDay()] + ', ' + d.getDate() + ' ' + EN_MONTHS[d.getMonth()] + ' ' + d.getFullYear(); }
+function fmtStamp(ts) {
+  const d = new Date(ts); if (isNaN(d)) return '—';
+  return d.getDate() + ' ' + EN_MONTHS[d.getMonth()] + ' ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+}
+function trim(n) { return Math.round(n * 100) / 100; }
+
+/* ---------- toast / modal ---------- */
+let toastT = null;
+function toast(msg, ms) {
+  const t = $('toast'); t.textContent = msg; t.classList.remove('hide');
+  clearTimeout(toastT); toastT = setTimeout(() => t.classList.add('hide'), ms || 2600);
+}
+const openModal = id => $(id).classList.remove('hide');
+const closeModal = id => $(id).classList.add('hide');
+
+/* ---------- screen router ---------- */
+function showScreen(id) {
+  ['screen-reg','screen-home','screen-day','screen-ins','screen-test','screen-res','screen-rev','screen-lb','screen-my']
+    .forEach(s => $(s).classList.add('hide'));
+  $(id).classList.remove('hide');
+  document.body.classList.toggle('in-test', id === 'screen-test');
+  window.scrollTo(0, 0);
+}
+
+/* ============================================================
+   REGISTRATION  (also used to edit name / number)
+   ============================================================ */
+function initReg() {
+  const st = student();
+  if (st) { $('regName').value = st.name || ''; $('regMobile').value = st.mobile || ''; }
+  $('btnReg').onclick = () => {
+    const name = $('regName').value.trim();
+    const mobRaw = $('regMobile').value.replace(/\D/g, '').replace(/^(91)(?=\d{10}$)/, '');
+    const err = $('regErr');
+    if (name.length < 3) { err.textContent = '⚠️ Please enter your full name (at least 3 characters).'; err.classList.remove('hide'); return; }
+    if (!/^[6-9]\d{9}$/.test(mobRaw)) { err.textContent = '⚠️ Enter a valid 10-digit mobile number (starting with 6/7/8/9).'; err.classList.remove('hide'); return; }
+    err.classList.add('hide');
+    saveStudent({ name: name, mobile: mobRaw, batch: BATCH_NAME, joined: new Date().toISOString() });
+    renderHome();
+    toast('Saved, ' + name + ' ✓');
+  };
+}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+function todayIdx() { const wd = (new Date().getDay() + 6) % 7; return wd <= 4 ? wd : -1; }
+
+function renderHome() {
+  const st = student() || {};
+  $('homeName').textContent = st.name || '—';
+  const t = todayIdx(), now = new Date();
+  $('homeStatus').textContent = 'Today: ' + EN_DAYS[now.getDay()] + (t >= 0 ? ' (day ' + (t + 1) + ' of the week)' : '');
+  const oldAdmin = $('adminChip'); if (oldAdmin && oldAdmin.parentNode) oldAdmin.parentNode.removeChild(oldAdmin);
+  if (cfg().admin) {
+    const b = document.createElement('span'); b.id = 'adminChip'; b.className = 'chip admin';
+    b.textContent = '🔓 All tests unlocked (UNLOCK_ALL = true)'; b.style.marginLeft = '8px';
+    $('homeStatus').insertAdjacentElement('afterend', b);
+  }
+
+  const totalQ = WEEK_DATA.reduce((a, d) => a + d.subs.reduce((b, s) => b + s.qs.length, 0), 0);
+  const local = allResults().filter(r => r.mobile === st.mobile);
+  const best = aggregate(local).find(x => x.mobile === st.mobile);
+  $('stQ').textContent = totalQ;
+  $('stM').textContent = totalQ * 2;
+  $('stS').textContent = best ? trim(best.total) : 0;
+  $('stA').textContent = local.length + ' / ' + WEEK_DATA.reduce((a, d) => a + d.subs.length, 0);
+
+  const box = $('dayList'); box.innerHTML = '';
+  WEEK_DATA.forEach((day, i) => {
+    const open = isUnlocked(i);
+    const dBest = best ? best.days[i] : 0;
+    const el = document.createElement('button');
+    el.className = 'day' + (open ? '' : ' locked');
+    el.type = 'button';
+    el.innerHTML =
+      '<span class="badge">Day<br>' + (i + 1) + '</span>' +
+      '<span class="mid"><b>' + day.name + ' — ' + day.subs.reduce((b,s)=>b+s.qs.length,0) + ' questions</b>' +
+      '<span class="meta">' + fmtDate(dayDate(i)) + ' • ' + day.subs.length + ' topic tests' +
+      (dBest > 0 ? ' • <b style="color:#1a7f4b">Your score: ' + trim(dBest) + '</b>' : '') + '</span>' +
+      '<span class="sched">' + day.slot + '</span>' +
+      (open ? '' : '<span class="count" data-cd="' + i + '">' + countdownText(unlockTime(i) - Date.now()) + '</span>') +
+      '</span>' +
+      '<span class="chip ' + (open ? (dBest > 0 ? 'done' : 'open') : 'lock') + '">' +
+      (open ? (dBest > 0 ? 'Retake' : 'Open now') : '🔒 Locked') + '</span>';
+    el.onclick = () => open ? openDay(i) : toast('🔒 ' + day.name + "'s test opens at 9:00 PM. " + countdownText(unlockTime(i) - Date.now()), 3400);
+    box.appendChild(el);
+  });
+  showScreen('screen-home');
+}
+
+/* ============================================================
+   DAY DETAIL (topic-wise tests)
+   ============================================================ */
+let CUR = { day: 0 };
+function openDay(i) {
+  CUR.day = i;
+  const day = WEEK_DATA[i];
+  $('dayTitle').textContent = day.name + ' — ' + fmtDate(dayDate(i));
+  $('daySub').textContent = day.slot;
+  const open = isUnlocked(i);
+  const chip = $('dayChip');
+  chip.className = 'chip ' + (open ? 'open' : 'lock');
+  chip.textContent = open ? (cfg().admin ? '🔓 Unlocked' : 'Open now') : '🔒 Locked — ' + countdownText(unlockTime(i) - Date.now());
+
+  const st = student() || {};
+  const mine = aggregate(allResults().filter(r => r.mobile === st.mobile));
+  const me = mine.find(x => x.mobile === st.mobile);
+  const dayQ = day.subs.reduce((b, s) => b + s.qs.length, 0);
+  $('dayBest').textContent = 'Max marks: ' + (dayQ * 2) + (me ? ' • So far: ' + trim(me.days[i]) : '');
+
+  const box = $('topicList'); box.innerHTML = '';
+  day.subs.forEach((sub, si) => {
+    const qn = sub.qs.length;
+    const bestRec = bestFor(st.mobile, i, sub.id);
+    const card = document.createElement('div');
+    card.className = 'topic' + (bestRec ? ' done' : '');
+    card.innerHTML =
+      '<h3>' + (si + 1) + '. ' + sub.title + ' ' + (bestRec ? '<span class="chip done">✓ Attempted</span>' : '') + '</h3>' +
+      (sub.note ? '<div class="meta">' + sub.note + '</div>' : '') +
+      '<div class="marks-line">Questions <b>' + qn + '</b> • Time <b>' + Math.round(qn * DUR_SEC_PER_Q / 60) + ' min</b> • Marking: correct <b>+2</b>, wrong <b>−0.5</b> • Max marks <b>' + (qn * 2) + '</b></div>' +
+      (bestRec ? '<div class="best" style="margin-top:7px">🏅 Your best score: ' + trim(bestRec.score) + ' / ' + (qn * 2) + '</div>' : '') +
+      '<div class="row" style="margin-top:10px"><button class="btn sm">' + (bestRec ? '🔁 Retake Test' : '▶ Start Test') + '</button></div>';
+    card.querySelector('button').onclick = () => (open ? openInstructions(i, si) : toast('🔒 This test is not open yet.'));
+    box.appendChild(card);
+  });
+  showScreen('screen-day');
+}
+
+function bestFor(mobile, dayIdx, testId) {
+  let best = null;
+  allResults().forEach(r => {
+    if (r.mobile === mobile && r.dayIdx === dayIdx && r.testId === testId) {
+      if (!best || r.score > best.score) best = r;
+    }
+  });
+  return best;
+}
+
+/* ============================================================
+   INSTRUCTIONS + TEST ENGINE
+   ============================================================ */
+let T = null;
+function openInstructions(i, si) {
+  const sub = WEEK_DATA[i].subs[si];
+  const qn = sub.qs.length;
+  $('insTitle').textContent = sub.title;
+  $('insSub').textContent = WEEK_DATA[i].name + ' • ' + qn + ' questions • Bengali';
+  $('insQ').textContent = qn;
+  $('insT').textContent = Math.round(qn * DUR_SEC_PER_Q / 60) + ' min';
+  $('insM').textContent = qn * 2;
+  $('btnStart').onclick = () => startTest(i, si);
+  showScreen('screen-ins');
+}
+
+function startTest(dayIdx, si) {
+  const day = WEEK_DATA[dayIdx], sub = day.subs[si];
+  if (!isUnlocked(dayIdx)) { toast('🔒 ' + day.name + ' is not open yet.'); return; }
+  const secs = sub.qs.length * DUR_SEC_PER_Q;
+  T = {
+    dayIdx, si, sub, qs: sub.qs, i: 0,
+    ans: sub.qs.map(() => null), marked: sub.qs.map(() => false), visited: sub.qs.map(() => false),
+    start: Date.now(), left: secs, total: secs, timer: null, done: false
+  };
+  $('tTitle').textContent = sub.title;
+  $('tSub').textContent = day.name + ' • ' + sub.qs.length + ' questions • Max marks ' + (sub.qs.length * 2);
+  renderQ();
+  showScreen('screen-test');
+  paintTimer();
+  window.addEventListener('beforeunload', warnLeave);
+  T.timer = setInterval(tick, 1000);
+}
+function warnLeave(e) { if (T && !T.done) { e.preventDefault(); e.returnValue = ''; } }
+
+function paintTimer() {
+  const el = $('tTimer');
+  if (!el) return;
+  const left = Math.max(0, T.left);
+  el.textContent = pad2(Math.floor(left / 60)) + ':' + pad2(left % 60);
+  el.classList.toggle('low', left <= 120);
+}
+
+function tick() {
+  if (!T || T.done) return;
+  T.left--;
+  if (T.left <= 0) { T.left = 0; paintTimer(); submitTest(true); return; }
+  paintTimer();
+  if (T.left === 60) toast('⏰ 1 minute left!');
+}
+
+function renderQ() {
+  if (!T) return;
+  const q = T.qs[T.i];
+  T.visited[T.i] = true;
+  $('qNo').textContent = 'Question ' + (T.i + 1) + ' / ' + T.qs.length;
+  $('qText').textContent = q.q;
+  const box = $('qOpts'); box.innerHTML = '';
+  ['a','b','c','d'].forEach((k, j) => {
+    if (j >= q.o.length) return;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'opt bn' + (T.ans[T.i] === j ? ' sel' : '');
+    b.innerHTML = '<span class="k">(' + k + ')</span><span>' + q.o[j] + '</span>' +
+      (T.ans[T.i] === j ? '<span class="tag" style="color:#0e6b74">✓ Selected</span>' : '');
+    b.onclick = () => { T.ans[T.i] = j; renderQ(); renderPalette(); };
+    box.appendChild(b);
+  });
+  renderPalette();
+  $('bMark').textContent = T.marked[T.i] ? '🔖 Marked for Review' : '🔖 Mark for Review';
+  $('bPrev').disabled = T.i === 0;
+  $('bNext').textContent = T.i === T.qs.length - 1 ? "You're on the last question ✓" : 'Save & Next ➜';
+}
+
+function renderPalette() {
+  const g = $('pGrid'); g.innerHTML = '';
+  T.qs.forEach((_, k) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'pbtn' + (k === T.i ? ' cur' : '') +
+      (T.marked[k] ? ' mark' : (T.ans[k] !== null ? ' ans' : (T.visited[k] ? ' notans' : '')));
+    b.textContent = k + 1;
+    b.onclick = () => { T.i = k; renderQ(); };
+    g.appendChild(b);
+  });
+}
+
+function submitDialog() {
+  if (!T || T.done) return;
+  const c = T.ans.filter(a => a !== null).length;
+  $('mSubStats').textContent = 'You answered ' + c + ' of ' + T.qs.length + ' questions (' +
+    (T.qs.length - c) + ' left blank — no negative marking). Time left: ' + pad2(Math.floor(T.left / 60)) + ':' + pad2(T.left % 60);
+  $('mSubWarn').textContent = 'You cannot change your answers after submitting.';
+  openModal('mSubmit');
+}
+
+function submitTest(auto) {
+  if (!T || T.done) return;
+  T.done = true;
+  clearInterval(T.timer);
+  window.removeEventListener('beforeunload', warnLeave);
+  const cw = categoryLists();
+  const score = 2 * cw.correct.length - 0.5 * cw.wrong.length;
+  const st = student() || {};
+  const rec = {
+    ts: new Date().toISOString(),
+    name: st.name || '', mobile: st.mobile || '', batch: BATCH_NAME,
+    dayIdx: T.dayIdx, dayKey: WEEK_DATA[T.dayIdx].key, day: WEEK_DATA[T.dayIdx].name,
+    testId: T.sub.id, testTitle: T.sub.title,
+    correct: cw.correct.length, wrong: cw.wrong.length, unattempted: cw.un.length,
+    score: score, max: T.qs.length * 2,
+    timeTakenSec: T.total - Math.max(0, T.left),
+    accuracy: (cw.correct.length + cw.wrong.length) ? Math.round(100 * cw.correct.length / (cw.correct.length + cw.wrong.length)) : 0,
+    percent: Math.round(100 * score / (T.qs.length * 2) * 10) / 10
+  };
+  const arr = allResults(); arr.push(rec); saveResults(arr);
+  const posted = postResult(rec);
+  renderResult(rec, { auto: !!auto, posted: posted });
+}
+
+/* question numbers grouped by result category (1-based) */
+function categoryLists() {
+  const correct = [], wrong = [], un = [];
+  T.qs.forEach((q, k) => {
+    if (T.ans[k] === null) un.push(k + 1);
+    else if (T.ans[k] === q.a) correct.push(k + 1);
+    else wrong.push(k + 1);
+  });
+  return { correct: correct, wrong: wrong, un: un };
+}
+
+function postResult(rec) {
+  const url = cfg().endpoint;
+  if (!url) return 'local';
+  try {
+    fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(rec) })
+      .catch(() => {});
+    return 'sent';
+  } catch (e) { return 'failed'; }
+}
+
+function renderResult(rec, meta) {
+  $('resWho').textContent = rec.name + ' • ' + rec.day + ' • ' + rec.testTitle;
+  $('resScore').textContent = trim(rec.score);
+  $('resMax').textContent = 'Max marks ' + rec.max + (meta.auto ? ' • ⏰ Time over, auto-submitted' : '');
+  const pct = Math.round(100 * rec.score / rec.max);
+  $('resRemark').textContent = pct >= 85 ? 'Outstanding! 🌟' : pct >= 70 ? 'Very good 👏' : pct >= 50 ? 'Good — needs a little more practice' : 'Read the explanations and try again 💪';
+  $('resC').textContent = rec.correct;
+  $('resW').textContent = rec.wrong;
+  $('resU').textContent = rec.unattempted;
+  $('resAcc').textContent = rec.accuracy + '%';
+  $('resTime').textContent = Math.floor(rec.timeTakenSec / 60) + 'm ' + (rec.timeTakenSec % 60) + 's';
+
+  /* question-number breakdown: correct / incorrect / unattempted */
+  const cat = categoryLists();
+  const fmt = a => a.length ? a.join(', ') : '—';
+  $('resBreakdown').innerHTML =
+    '<div>✅ <b>Correct (' + cat.correct.length + '):</b> ' + fmt(cat.correct) + '</div>' +
+    '<div>❌ <b>Incorrect (' + cat.wrong.length + '):</b> ' + fmt(cat.wrong) + '</div>' +
+    '<div>⭕ <b>Unattempted (' + cat.un.length + '):</b> ' + fmt(cat.un) + '</div>';
+
+  /* filter buttons */
+  const rf = $('resFilters'); rf.innerHTML = '';
+  [['all','📖 All questions (' + T.qs.length + ')',''],
+   ['correct','✅ Correct (' + cat.correct.length + ')','c'],
+   ['wrong','❌ Incorrect (' + cat.wrong.length + ')','w'],
+   ['un','⭕ Unattempted (' + cat.un.length + ')','u']].forEach(([f, label, cls]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'fbtn ' + cls;
+    b.textContent = label;
+    b.onclick = () => renderReview(f);
+    rf.appendChild(b);
+  });
+
+  $('syncNote').textContent = meta.posted === 'sent'
+    ? '☁️ Result sent to the Google Sheet — check the 🏆 Leaderboard in a moment.'
+    : meta.posted === 'local'
+      ? (cfg().sheetId
+          ? '💾 Result saved on this device. (SHEET_ID only reads the sheet — to record submissions in it, also paste the Apps Script SHEET_URL.)'
+          : '💾 Result saved on this device (Google Sheet is not connected).')
+      : '💾 Result saved on this device (network problem — could not reach the sheet).';
+  showScreen('screen-res');
+}
+
+/* ============================================================
+   REVIEW — answer key filtered by correct / incorrect / unattempted
+   ============================================================ */
+let REV_FILTER = 'all';
+function renderReview(filter) {
+  if (!T) return;
+  REV_FILTER = filter || 'all';
+  const day = WEEK_DATA[T.dayIdx];
+  const cat = categoryLists();
+
+  $('revTitle').textContent = '📖 Answer Key — ' + T.sub.title;
+  $('revSub').innerHTML = day.name + ' • Marking: correct <b>+2</b>, wrong <b>−0.5</b>, unattempted <b>0</b> • ' +
+    'Correct <b style="color:#1a7f4b">' + cat.correct.length + '</b>, Incorrect <b style="color:#c0392b">' + cat.wrong.length +
+    '</b>, Unattempted <b>' + cat.un.length + '</b>';
+
+  const rfb = $('revFilters'); rfb.innerHTML = '';
+  [['all','All (' + T.qs.length + ')',''],
+   ['correct','Correct (' + cat.correct.length + ')','c'],
+   ['wrong','Incorrect (' + cat.wrong.length + ')','w'],
+   ['un','Unattempted (' + cat.un.length + ')','u']].forEach(([f, label, cls]) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'fbtn ' + cls + (REV_FILTER === f ? ' on' : '');
+    b.textContent = label;
+    b.onclick = () => renderReview(f);
+    rfb.appendChild(b);
+  });
+
+  const inFilter = k => {
+    const my = T.ans[k];
+    if (REV_FILTER === 'correct') return my !== null && my === T.qs[k].a;
+    if (REV_FILTER === 'wrong') return my !== null && my !== T.qs[k].a;
+    if (REV_FILTER === 'un') return my === null;
+    return true;
+  };
+
+  const box = $('revList'); box.innerHTML = '';
+  let shown = 0;
+  T.qs.forEach((q, k) => {
+    if (!inFilter(k)) return;
+    shown++;
+    const my = T.ans[k];
+    const ok = my === q.a;
+    const el = document.createElement('div');
+    el.className = 'rev ' + (my === null ? 'ru' : ok ? 'rc' : 'rw');
+    let html = '<div class="head"><span>Question ' + (k + 1) + '</span><span style="color:' +
+      (my === null ? '#5b6b7d' : ok ? '#1a7f4b' : '#c0392b') + '">' +
+      (my === null ? '⭕ Unattempted (0)' : ok ? '✓ Correct (+2)' : '✗ Incorrect (−0.5)') + '</span></div>' +
+      '<div class="bn" style="font-weight:700;margin:6px 0 9px">' + q.q + '</div>';
+    ['a','b','c','d'].forEach((L, j) => {
+      if (j >= q.o.length) return;
+      const cls = (j === q.a) ? 'right' : (j === my ? 'wrong' : '');
+      const tag = (j === q.a) ? '<span class="tag" style="color:#1a7f4b">Correct answer</span>'
+        : (j === my ? '<span class="tag" style="color:#c0392b">Your answer</span>' : '');
+      html += '<div class="opt bn ' + cls + '"><span class="k">(' + L + ')</span><span>' + q.o[j] + '</span>' + tag + '</div>';
+    });
+    html += '<div class="exp bn"><b>Explanation:</b> ' + q.e + '</div>';
+    el.innerHTML = html;
+    box.appendChild(el);
+  });
+  $('revEmpty').classList.toggle('hide', shown > 0);
+  showScreen('screen-rev');
+}
+
+/* ============================================================
+   LEADERBOARD + DAY-WISE DATA
+   ============================================================ */
+function aggregate(rows) {
+  const by = new Map();
+  rows.forEach(r => {
+    if (r.score === undefined) return;
+    const key = (r.mobile || '').trim() || ('name:' + r.name);
+    if (!by.has(key)) by.set(key, { name: r.name, mobile: r.mobile, days: [0,0,0,0,0], total: 0, attempts: 0, best: {}, lastTs: '' });
+    const st = by.get(key);
+    const tk = (+r.dayIdx) + '|' + r.testId;
+    if (st.best[tk] === undefined || r.score > st.best[tk]) st.best[tk] = r.score;
+    st.attempts++;
+    if ((r.ts || '') > st.lastTs) st.lastTs = r.ts || '';
+  });
+  const out = [];
+  by.forEach(st => {
+    let total = 0;
+    for (const k in st.best) { const di = +k.split('|')[0]; st.days[di] = trim(st.days[di] + st.best[k]); total += st.best[k]; }
+    st.total = trim(total);
+    out.push(st);
+  });
+  out.sort((a, b) => b.total - a.total || a.name.localeCompare(b.name));
+  return out;
+}
+
+const DAY_LABELS = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
+let LB = { rows: [], entries: [], src: 'local' };
+
+function jsonp(url, params) {
+  return new Promise((resolve, reject) => {
+    const cb = 'txcb_' + Math.random().toString(36).slice(2);
+    const s = document.createElement('script');
+    const q = new URLSearchParams(Object.assign({}, params, { callback: cb }));
+    const to = setTimeout(() => { cleanup(); reject(new Error('timeout')); }, 12000);
+    function cleanup() { clearTimeout(to); try { delete window[cb]; } catch (e) { window[cb] = undefined; } if (s.parentNode) s.parentNode.removeChild(s); }
+    window[cb] = data => { cleanup(); resolve(data); };
+    s.onerror = () => { cleanup(); reject(new Error('network')); };
+    s.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + q.toString();
+    document.head.appendChild(s);
+  });
+}
+
+/* ============================================================
+   DIRECT GOOGLE SHEET READ — reads rows & columns by Sheet ID
+   (Google gviz endpoint + JSONP; sheet must be link-shared as Viewer)
+   ============================================================ */
+const GV_KEYMAP = {
+  timestampiso: 'ts', timestamp: 'ts', time: 'ts',     /* 'server time' is ignored on purpose */
+  name: 'name', mobile: 'mobile', mobilenumber: 'mobile', batch: 'batch',
+  dayindex0mon: 'dayIdx', dayindex: 'dayIdx', day: 'day',
+  testid: 'testId', testtitle: 'testTitle',
+  correct: 'correct', wrong: 'wrong', unattempted: 'unattempted',
+  score: 'score', marksobtained: 'score', max: 'max', maxmarks: 'max',
+  accuracy: 'accuracy', accuracypercent: 'accuracy', percent: 'percent', percentage: 'percent',
+  timetaken: 'timeTakenSec', timetakensec: 'timeTakenSec', timetakenseconds: 'timeTakenSec'
+};
+function normLabel(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]/g, ''); }
+function gvizUrl(id, tab, cb, colonForm) {
+  return 'https://docs.google.com/spreadsheets/d/' + encodeURIComponent(id) +
+    '/gviz/tq?tqx=out:json;responseHandler' + (colonForm ? ':' : '=') + cb +
+    '&headers=1&sheet=' + encodeURIComponent(tab || 'Results');
+}
+function gvizCell(c) {
+  if (c === null || c === undefined) return '';
+  let v = c.v;
+  if (v === null || v === undefined) v = (c.f === undefined ? '' : c.f);
+  if (typeof v === 'string') {
+    const m = /^Date\((\d+),(\d+),(\d+)(?:,(\d+),(\d+),(\d+))?\)$/.exec(v);
+    if (m) { const d = new Date(+m[1], +m[2], +m[3], +(m[4] || 0), +(m[5] || 0), +(m[6] || 0)); return isNaN(d) ? '' : d.toISOString(); }
+  }
+  return v;
+}
+function parseGviz(data) {
+  if (!data) throw new Error('empty sheet response');
+  if (data.status === 'error') {
+    const e = (data.errors && data.errors[0]) || {};
+    throw new Error(e.detailed_message || e.message || 'sheet returned an error');
+  }
+  const table = data.table || {}, cols = table.cols || [], rows = table.rows || [];
+  const keys = cols.map(c => { const k = GV_KEYMAP[normLabel(c && c.label)]; return k === undefined ? null : k; });
+  if (keys.indexOf('mobile') < 0 && keys.indexOf('name') < 0) {
+    throw new Error('could not find “Name” / “Mobile” columns — check SHEET_TAB (expected “' + cfg().sheetTab + '”)');
+  }
+  const out = [];
+  rows.forEach(r => {
+    if (!r || !r.c) return;
+    const o = {};
+    r.c.forEach((cell, i) => { const k = keys[i]; if (!k || cell === null || cell === undefined) return; o[k] = gvizCell(cell); });
+    if (!String(o.name || '').trim() && !String(o.mobile || '').trim()) return;
+    o.name = String(o.name || '').trim();
+    o.mobile = String(o.mobile || '').trim();
+    o.dayIdx = Number(o.dayIdx || 0) || 0;
+    o.correct = Number(o.correct || 0) || 0;
+    o.wrong = Number(o.wrong || 0) || 0;
+    o.unattempted = Number(o.unattempted || 0) || 0;
+    o.score = Number(o.score || 0) || 0;
+    o.max = Number(o.max || 0) || 0;
+    o.accuracy = Number(o.accuracy || 0) || 0;
+    o.percent = Number(o.percent || 0) || 0;
+    o.timeTakenSec = Number(o.timeTakenSec || 0) || 0;
+    o.testId = o.testId || ('day' + o.dayIdx);
+    o.testTitle = String(o.testTitle || '').trim();
+    if (o.ts) { const t = new Date(o.ts); o.ts = isNaN(t) ? '' : t.toISOString(); } else { o.ts = ''; }
+    out.push(o);
+  });
+  return out;
+}
+function gvizOnce(id, tab, colonForm) {
+  return new Promise((resolve, reject) => {
+    const cb = 'txg_' + Math.random().toString(36).slice(2);
+    const s = document.createElement('script');
+    let done = false;
+    const to = setTimeout(() => { finish(new Error('timed out — is the sheet shared as “Anyone with the link → Viewer”?')); }, 12000);
+    function cleanup() { clearTimeout(to); try { delete window[cb]; } catch (e) { window[cb] = undefined; } if (s.parentNode) s.parentNode.removeChild(s); }
+    function finish(err, data) { if (done) return; done = true; cleanup(); err ? reject(err) : resolve(data); }
+    window[cb] = data => finish(null, data);
+    s.onerror = () => finish(new Error('could not load the sheet (404, not shared, or wrong ID)'));
+    s.src = gvizUrl(id, tab, cb, colonForm);
+    document.head.appendChild(s);
+  });
+}
+function readSheetById(id, tab) {
+  /* documented tqx syntax uses ':' — retry with '=' for older/proxied setups */
+  return gvizOnce(id, tab, true)
+    .then(data => parseGviz(data))
+    .catch(() => gvizOnce(id, tab, false).then(data => parseGviz(data)));
+}
+
+async function loadBoard() {
+  const c = cfg();
+  const localRows = allResults();
+  LB = { rows: [], entries: [], src: 'local', note: '' };
+
+  if (c.sheetId) {
+    /* Mode 1 — read rows & columns directly from the Sheet ID */
+    $('lbStatus').textContent = 'Reading rows directly from the Google Sheet…';
+    try {
+      const rows = await readSheetById(c.sheetId, c.sheetTab);
+      LB.entries = rows; LB.rows = aggregate(rows); LB.src = 'sheetid';
+    } catch (e) {
+      LB.note = (e && e.message) ? e.message : 'read failed';
+      if (c.endpoint) {
+        try {
+          const data = await jsonp(c.endpoint, { action: 'leaderboard' });
+          if (data && data.ok && Array.isArray(data.entries)) { LB.entries = data.entries; LB.rows = aggregate(data.entries); LB.src = 'sheet'; }
+          else throw new Error('bad');
+        } catch (e2) { LB.entries = localRows; LB.rows = aggregate(localRows); LB.src = 'local-fail'; }
+      } else { LB.entries = localRows; LB.rows = aggregate(localRows); LB.src = 'local-fail'; }
+    }
+  } else if (c.endpoint) {
+    /* Mode 2 — Apps Script web-app (also handles submissions) */
+    $('lbStatus').textContent = 'Loading data from the Google Sheet…';
+    try {
+      const data = await jsonp(c.endpoint, { action: 'leaderboard' });
+      if (data && data.ok && Array.isArray(data.entries)) {
+        LB.entries = data.entries;
+        LB.rows = aggregate(data.entries);
+        LB.src = 'sheet';
+      } else { throw new Error('bad'); }
+    } catch (e) {
+      LB.entries = localRows; LB.rows = aggregate(localRows); LB.src = 'local-fail';
+    }
+  } else {
+    /* Mode 3 — this device only */
+    LB.entries = localRows; LB.rows = aggregate(localRows); LB.src = 'local';
+  }
+
+  $('lbStatus').textContent =
+    LB.src === 'sheetid' ? '☁️ Reading rows directly from Sheet ID (' + c.sheetTab + ' tab) • ' + LB.entries.length + ' rows'
+    : LB.src === 'sheet' ? '☁️ Live data from the Google Sheet • ' + LB.entries.length + ' entries'
+    : LB.src === 'local-fail' ? '⚠️ Could not read the sheet' + (LB.note ? ' — ' + LB.note : '') + '. Showing results from this device (' + LB.entries.length + ')'
+    : '💾 Results on this device (' + LB.entries.length + ') — the live leaderboard appears once the Google Sheet is connected';
+  renderBoard();
+
+  function renderBoard() {
+    const filt = $('lbDay').value;
+    const showAll = filt === 'all';
+    const tbl = $('lbTable');
+    let h = '<thead><tr><th class="num">Rank</th><th>Name</th><th>Mobile</th><th>Batch</th>' +
+      (showAll ? DAY_LABELS.map(d => '<th class="num">' + d.slice(0, 3) + '</th>').join('') : '<th class="num">Score</th>') +
+      '<th class="num">Total</th><th class="num">Attempts</th></tr></thead><tbody>';
+    const rows = LB.rows
+      .map(r => ({ r, val: showAll ? r.total : r.days[+filt] }))
+      .filter(x => showAll || x.val > 0 || x.r.attempts)
+      .sort((a, b) => b.val - a.val || a.r.name.localeCompare(b.r.name));
+    if (!rows.length) h += '<tr><td colspan="9" style="text-align:center;color:#5b6b7d;padding:18px">No entries yet — take a test to appear here.</td></tr>';
+    rows.forEach((x, k) => {
+      const cls = k === 0 ? 'rank1' : k === 1 ? 'rank2' : k === 2 ? 'rank3' : '';
+      const medal = k === 0 ? '🥇' : k === 1 ? '🥈' : k === 2 ? '🥉' : (k + 1);
+      h += '<tr class="' + cls + '"><td class="num medal">' + medal + '</td><td>' + x.r.name + '</td><td>' + mask(x.r.mobile) + '</td><td>' + BATCH_NAME + '</td>';
+      if (showAll) h += x.r.days.map(v => '<td class="num">' + trim(v) + '</td>').join('');
+      else h += '<td class="num">' + trim(x.val) + '</td>';
+      h += '<td class="num"><b>' + trim(showAll ? x.r.total : x.r.days[+filt]) + '</b></td><td class="num">' + x.r.attempts + '</td></tr>';
+    });
+    tbl.innerHTML = h + '</tbody>';
+
+    const en = LB.entries.slice().sort((a, b) => (b.ts || '') > (a.ts || '') ? 1 : -1).slice(0, 150);
+    let e = '<thead><tr><th>Time</th><th>Name</th><th>Day</th><th>Test</th><th class="num">Correct</th><th class="num">Wrong</th><th class="num">Score</th><th class="num">Time taken</th></tr></thead><tbody>';
+    if (!en.length) e += '<tr><td colspan="8" style="text-align:center;color:#5b6b7d;padding:18px">No data yet.</td></tr>';
+    en.forEach(r => {
+      e += '<tr><td>' + fmtStamp(r.ts) + '</td><td>' + (r.name || '') + '</td><td>' + (DAY_LABELS[r.dayIdx] || r.day || '') + '</td><td>' + (r.testTitle || '') +
+        '</td><td class="num" style="color:#1a7f4b">' + r.correct + '</td><td class="num" style="color:#c0392b">' + r.wrong +
+        '</td><td class="num"><b>' + trim(r.score) + '</b></td><td class="num">' + Math.round((r.timeTakenSec || 0) / 60) + 'm</td></tr>';
+    });
+    $('enTable').innerHTML = e + '</tbody>';
+  }
+}
+
+function mask(m) { m = String(m || ''); return m.length >= 6 ? m.slice(0, 2) + '••••' + m.slice(-3) : m; }
+
+/* ---------- my results ---------- */
+function renderMy() {
+  const st = student() || {};
+  const rows = allResults().filter(r => r.mobile === st.mobile).sort((a, b) => (b.ts || '').localeCompare(a.ts || ''));
+  let h = '<thead><tr><th>Time</th><th>Day</th><th>Test</th><th class="num">Correct</th><th class="num">Wrong</th><th class="num">Unattempted</th><th class="num">Score</th></tr></thead><tbody>';
+  if (!rows.length) h += '<tr><td colspan="7" style="text-align:center;color:#5b6b7d;padding:18px">You have not attempted any test yet.</td></tr>';
+  rows.forEach(r => {
+    h += '<tr><td>' + fmtStamp(r.ts) + '</td><td>' + (DAY_LABELS[r.dayIdx] || '') + '</td><td>' + r.testTitle + '</td><td class="num" style="color:#1a7f4b">' + r.correct +
+      '</td><td class="num" style="color:#c0392b">' + r.wrong + '</td><td class="num">' + r.unattempted +
+      '</td><td class="num"><b>' + trim(r.score) + '</b> / ' + r.max + '</td></tr>';
+  });
+  $('myTable').innerHTML = h + '</tbody>';
+  showScreen('screen-my');
+}
+
+function downloadCsv() {
+  const rows = allResults();
+  if (!rows.length) { toast('No data yet.'); return; }
+  const cols = ['ts','name','mobile','batch','day','testTitle','correct','wrong','unattempted','score','max','accuracy','percent','timeTakenSec'];
+  let csv = cols.join(',') + '\n';
+  rows.forEach(r => { csv += cols.map(c => '"' + String(r[c] === undefined ? '' : r[c]).replace(/"/g, '""') + '"').join(',') + '\n'; });
+  try {
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'target_x_week1_results.csv'; a.click();
+    toast('CSV download started.');
+  } catch (e) { toast('Downloads are blocked in this environment.'); }
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+function boot() {
+  $('lbDay').innerHTML = '<option value="all">All days (Overall)</option>' +
+    DAY_LABELS.map((d, i) => '<option value="' + i + '">' + d + '</option>').join('');
+  $('lbDay').onchange = () => loadBoard();
+
+  initReg();
+  $('btnEdit').onclick = () => showScreen('screen-reg');
+  $('btnLB').onclick = () => { showScreen('screen-lb'); loadBoard(); };
+  $('btnMy').onclick = () => renderMy();
+  $('btnBackHome').onclick = renderHome;
+  $('btnBackDay').onclick = () => openDay(CUR.day);
+  $('bBackHome2').onclick = renderHome;
+  $('bBackHome3').onclick = renderHome;
+  $('bHome2').onclick = renderHome;
+  $('bLb2').onclick = () => { showScreen('screen-lb'); loadBoard(); };
+  $('bLbRefresh').onclick = () => loadBoard();
+  $('bBackRes').onclick = () => showScreen('screen-res');
+  $('bReview').onclick = () => renderReview('all');
+  $('bAgain').onclick = () => { if (T) openInstructions(T.dayIdx, T.si); };
+  $('bCsv').onclick = downloadCsv;
+  $('bReset').onclick = () => { if (confirm('This will delete all results stored on this device. Continue?')) { saveResults([]); toast('Device data cleared.'); renderMy(); } };
+
+  $('bPrev').onclick = () => { if (T.i > 0) { T.i--; renderQ(); } };
+  $('bNext').onclick = () => { if (T.i < T.qs.length - 1) { T.i++; renderQ(); } else toast('This is the last question — press “Submit Test”.'); };
+  $('bClear').onclick = () => { T.ans[T.i] = null; renderQ(); renderPalette(); };
+  $('bMark').onclick = () => { T.marked[T.i] = !T.marked[T.i]; renderQ(); };
+  $('bSubmit').onclick = submitDialog;
+  $('mCancel').onclick = () => closeModal('mSubmit');
+  $('mOk').onclick = () => { closeModal('mSubmit'); submitTest(false); };
+
+  /* live countdown refresh (in place; full re-render only when a lock opens) */
+  let lockSig = '';
+  setInterval(() => {
+    const sig = WEEK_DATA.map((d, i) => (isUnlocked(i) ? '1' : '0')).join('');
+    if (!$('screen-home').classList.contains('hide')) {
+      if (sig !== lockSig) { lockSig = sig; renderHome(); }
+      else {
+        WEEK_DATA.forEach((d, i) => {
+          const el = document.querySelector('[data-cd="' + i + '"]');
+          if (el) el.textContent = countdownText(unlockTime(i) - Date.now());
+        });
+      }
+    } else if (!$('screen-day').classList.contains('hide')) {
+      const chip = $('dayChip');
+      if (!isUnlocked(CUR.day)) chip.textContent = '🔒 Locked — ' + countdownText(unlockTime(CUR.day) - Date.now());
+      else if (sig !== lockSig) { lockSig = sig; openDay(CUR.day); }
+    } else { lockSig = sig; }
+  }, 1000);
+
+  if (student()) { renderHome(); } else { showScreen('screen-reg'); }
+}
+document.addEventListener('DOMContentLoaded', boot);
+</script>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a49dd4a76b503c9a',t:'MTc5MTg4OTEyMg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
